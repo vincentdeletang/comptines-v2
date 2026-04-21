@@ -341,6 +341,7 @@ Nage nage petit poisson.`,
     title: "Dodo l'enfant do",
     emoji: '🌙',
     audio: 'assets/audio/comptine-21.mp3',
+    offset: 5,
     lyrics: `Dodo, l'enfant do,
 L'enfant dormira bien vite.
 Dodo, l'enfant do,
