@@ -8,6 +8,7 @@ const SONGS = [
     title: 'Il est né le divin enfant',
     emoji: '👼',
     audio: 'assets/audio/comptine-1.mp3',
+    offset: 0,
     lyrics: `Il est né le divin enfant,
 Jouez hautbois, résonnez musettes !
 Il est né le divin enfant,
@@ -320,6 +321,22 @@ Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.`,
   },
   {
+    id: 'comptine-22',
+    title: 'Tape tape petites mains',
+    emoji: '👏',
+    audio: 'assets/audio/comptine-22.mp3',
+    offset: 6,
+    lyrics: `Tape tape petites mains,
+Tourne tourne petit moulin,
+Vole vole petit oiseau,
+Nage nage petit poisson.
+
+Tape tape petites mains,
+Tourne tourne petit moulin,
+Vole vole petit oiseau,
+Nage nage petit poisson.`,
+  },
+  {
     id: 'comptine-21',
     title: "Dodo l'enfant do",
     emoji: '🌙',
@@ -438,6 +455,7 @@ function playSong(index) {
 
   if (state.currentIndex !== index) {
     el.audio.src = song.audio;
+    el.audio.currentTime = song.offset || 0;
     state.currentIndex = index;
   }
 
