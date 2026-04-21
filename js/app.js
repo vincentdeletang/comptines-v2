@@ -320,6 +320,20 @@ Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.`,
   },
   {
+    id: 'comptine-20',
+    title: "La chanson de l'alphabet",
+    emoji: '🔤',
+    audio: 'assets/audio/comptine-20.mp3',
+    lyrics: `A B C D E F G
+H I J K L M N O P
+Q R S
+T U V
+W X Y Z
+
+Maintenant je sais mon alphabet,
+Chante avec moi si tu veux bien !`,
+  },
+  {
     id: 'comptine-19',
     title: 'Les anges dans nos campagnes',
     emoji: '😇',
@@ -362,7 +376,7 @@ const PALETTES = [
 const state = {
   currentIndex: -1,
   isPlaying: false,
-  tab: 'all',
+  tab: JSON.parse(localStorage.getItem('fav') || '[]').length > 0 ? 'favorites' : 'all',
   sheetOpen: false,
   favorites: new Set(JSON.parse(localStorage.getItem('fav') || '[]')),
   wakeLock: null,
@@ -536,22 +550,24 @@ function renderGrid() {
     const isFav = state.favorites.has(song.id);
 
     return `
-      <button
+      <div
         class="song-card${isCurrent && state.isPlaying ? ' is-active' : ''}"
         data-index="${globalIdx}"
         style="--c-from:${pal.from};--c-to:${pal.to};--c-accent:${pal.accent}"
+        role="button"
+        tabindex="0"
         aria-label="${song.title}"
       >
         <div class="card-media">
-          <span>${song.emoji}</span>
+          <span class="card-emoji">${song.emoji}</span>
+          <button class="card-fav${isFav ? ' is-fav' : ''}" data-id="${song.id}" aria-label="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">♥</button>
           ${isCurrent && state.isPlaying ? `
             <div class="card-eq" aria-hidden="true">
               <span></span><span></span><span></span>
             </div>` : ''}
         </div>
         <span class="card-title">${song.title}</span>
-        <button class="card-fav${isFav ? ' is-fav' : ''}" data-id="${song.id}" aria-label="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">♥</button>
-      </button>
+      </div>
     `;
   }).join('');
 }
@@ -580,10 +596,9 @@ function render() {
    ========================================================= */
 
 /* Grille — tap sur card ou sur bouton favori */
-el.grid.addEventListener('click', (e) => {
+function handleGridClick(e) {
   const favBtn = e.target.closest('.card-fav');
   if (favBtn) {
-    e.stopPropagation();
     toggleFavorite(favBtn.dataset.id);
     return;
   }
@@ -595,6 +610,11 @@ el.grid.addEventListener('click', (e) => {
   } else {
     playSong(index);
   }
+}
+
+el.grid.addEventListener('click', handleGridClick);
+el.grid.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleGridClick(e); }
 });
 
 /* Mini-player */
@@ -659,5 +679,10 @@ if ('serviceWorker' in navigator) {
 /* =========================================================
    Init
    ========================================================= */
+
+// Sync tab actif visuellement avec le state initial
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.classList.toggle('active', btn.dataset.tab === state.tab);
+});
 
 render();
