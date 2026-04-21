@@ -321,20 +321,70 @@ Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.`,
   },
   {
+    id: 'comptine-25',
+    title: 'A comme Avion',
+    emoji: '✈️',
+    audio: 'assets/audio/comptine-25.mp3',
+    offset: 3,
+    lyrics: `A comme Avion
+B comme Banane
+C comme Cache-Cache
+D comme Dodo
+A B C D
+
+E comme Étoile
+F comme Fromage
+G comme Gâteau
+H comme Hibou
+E F G H
+
+I comme Image
+J comme Jardin
+K comme Kangourou
+L comme Lapin
+I J K L
+
+M comme Maman
+N comme Nuage
+O comme Orange
+P comme Papa
+M N O P
+
+Q comme Quoi ?
+R comme Rose
+S comme Soleil
+T comme Train
+Q R S T
+
+U comme Univers
+V comme Vache
+W comme Wagon
+X comme Xylophone
+U V W X
+
+Y comme Yaourt
+Z comme Zèbre
+Nous sommes arrivés
+À la fin d'l'alphabet
+A B C D`,
+  },
+  {
     id: 'comptine-24',
     title: "Plic ploc j'écoute la pluie",
     emoji: '🌧️',
     audio: 'assets/audio/comptine-24.mp3',
     offset: 7,
-    lyrics: `Plic ploc, plic ploc,
-J'écoute la pluie,
-Plic ploc, plic ploc,
-Tomber dans la nuit.
+    lyrics: `Plic ploc, j'écoute la pluie, pluie
+Plic ploc, plic ploc, j'écoute la pluie
 
-Les gouttes qui dansent
-Sur le toit de la maison,
-Plic ploc, plic ploc,
-Quelle belle chanson !`,
+Plic ploc, plic ploc, je suis dans mon lit
+Plic ploc, plic ploc, dehors il fait froid
+Plic ploc, plic ploc, qu'on est bien chez soi
+
+Plic ploc, plic ploc, j'écoute la pluie
+Plic ploc, plic ploc, je suis dans mon lit
+Plic ploc, plic ploc, dehors il fait froid
+Plic ploc, plic ploc, qu'on est bien chez soi`,
   },
   {
     id: 'comptine-23',
