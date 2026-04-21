@@ -664,8 +664,8 @@ function initSortable() {
     scroll: true,
     scrollSensitivity: 80,
     scrollSpeed: 12,
-    forceFallback: true,
-    fallbackTolerance: 3,
+    ghostClass: 'sortable-ghost',
+    chosenClass: 'sortable-chosen',
     onStart: () => { isDragging = true; navigator.vibrate?.(40); },
     onEnd: (evt) => {
       isDragging = false;
