@@ -653,7 +653,8 @@ let isDragging = false;
 
 function toggleEditMode() {
   state.editMode = !state.editMode;
-  el.editBtn.textContent = state.editMode ? '✅ Terminer' : '✏️ Modifier l\'ordre';
+  el.editBtn.querySelector('.fab-label').textContent = state.editMode ? 'Terminer' : 'Trier';
+  el.editBtn.querySelector('.fab-icon').textContent = state.editMode ? '✅' : '⇅';
   el.editBtn.classList.toggle('is-active', state.editMode);
   render();
 }
@@ -761,6 +762,7 @@ function renderGrid() {
 function renderMiniPlayer() {
   const hasSong = !!state.currentSongId;
   el.miniPlayer.classList.toggle('is-visible', hasSong);
+  el.editBtn.classList.toggle('with-player', hasSong);
   if (!hasSong) return;
   const song = getSong(state.currentSongId);
   el.miniEmoji.textContent = song.emoji;
@@ -817,5 +819,9 @@ if ('serviceWorker' in navigator) {
 /* =========================================================
    Init
    ========================================================= */
+
+// Nettoyage des clés localStorage de l'ancienne version (favoris/tabs)
+localStorage.removeItem('fav');
+localStorage.removeItem('tab');
 
 render();
