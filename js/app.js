@@ -321,6 +321,22 @@ Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.`,
   },
   {
+    id: 'comptine-24',
+    title: "Plic ploc j'écoute la pluie",
+    emoji: '🌧️',
+    audio: 'assets/audio/comptine-24.mp3',
+    offset: 7,
+    lyrics: `Plic ploc, plic ploc,
+J'écoute la pluie,
+Plic ploc, plic ploc,
+Tomber dans la nuit.
+
+Les gouttes qui dansent
+Sur le toit de la maison,
+Plic ploc, plic ploc,
+Quelle belle chanson !`,
+  },
+  {
     id: 'comptine-23',
     title: 'Brille brille petite étoile',
     emoji: '⭐',
