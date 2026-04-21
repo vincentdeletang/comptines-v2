@@ -661,6 +661,8 @@ function toggleEditMode() {
 function initSortable() {
   sortable = new Sortable(el.grid, {
     animation: 150,
+    delay: 150,
+    delayOnTouchOnly: true,
     scroll: true,
     scrollSensitivity: 80,
     scrollSpeed: 12,
