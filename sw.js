@@ -1,4 +1,4 @@
-const CACHE = 'comptines-20260421221307';
+const CACHE = 'comptines-20260421221519';
 
 const PRECACHE = [
   '/',

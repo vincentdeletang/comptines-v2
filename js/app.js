@@ -495,7 +495,7 @@ function prev() {
   playSong((state.currentIndex - 1 + SONGS.length) % SONGS.length);
 }
 
-el.audio.addEventListener('ended', next);
+el.audio.loop = true;
 
 /* =========================================================
    Wake Lock
