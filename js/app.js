@@ -650,6 +650,7 @@ let dragOverId = null;
 let dragCardEl = null;
 let ghost = null;
 let isDragging = false;
+let scrollInterval = null;
 
 function toggleEditMode() {
   state.editMode = !state.editMode;
@@ -681,6 +682,15 @@ function moveDrag(touch) {
   ghost.style.left = (touch.clientX - rect.width / 2) + 'px';
   ghost.style.top = (touch.clientY - rect.height / 2) + 'px';
 
+  // Auto-scroll quand le doigt approche du bord
+  clearInterval(scrollInterval);
+  const EDGE = 90, SPEED = 10;
+  if (touch.clientY < EDGE) {
+    scrollInterval = setInterval(() => window.scrollBy(0, -SPEED), 16);
+  } else if (touch.clientY > window.innerHeight - EDGE) {
+    scrollInterval = setInterval(() => window.scrollBy(0, SPEED), 16);
+  }
+
   ghost.style.visibility = 'hidden';
   const below = document.elementFromPoint(touch.clientX, touch.clientY);
   ghost.style.visibility = 'visible';
@@ -705,6 +715,8 @@ function endDrag() {
     }
   }
 
+  clearInterval(scrollInterval);
+  scrollInterval = null;
   ghost?.remove();
   ghost = null;
   document.querySelectorAll('.song-card.is-dragging, .song-card.drag-over')
