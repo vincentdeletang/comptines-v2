@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /c/Users/Vincent/Documents/www/comptines-v2/css /c/Users/Vincent/Documents/www/comptines-v2/js /c/Users/Vincent/Documents/www/comptines-v2/assets/icons)",
+      "Bash(cp /c/Users/Vincent/Documents/www/comptines/assets/icons/* /c/Users/Vincent/Documents/www/comptines-v2/assets/icons/)",
+      "Bash(cp -r /c/Users/Vincent/Documents/www/comptines/assets/audio /c/Users/Vincent/Documents/www/comptines-v2/assets/audio)",
+      "Bash(python3 -m http.server 8090)",
+      "Bash(echo \"Serveur PID=$! sur http://localhost:8090\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8090/index.html)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8090/)"
+    ]
+  }
+}

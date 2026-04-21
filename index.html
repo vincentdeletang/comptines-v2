@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#A855F7">
+  <meta name="description" content="Comptines pour bébé">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Comptines">
+  <title>Comptines</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/icons/icon-512.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- Header -->
+  <header class="header">
+    <h1>🎵 Comptines</h1>
+    <div class="tabs">
+      <button class="tab active" data-tab="all">Toutes</button>
+      <button class="tab" data-tab="favorites">❤️ Favoris</button>
+    </div>
+  </header>
+
+  <!-- Grille de comptines -->
+  <main class="grid" id="grid"></main>
+
+  <!-- Mini-player (visible quand lecture en cours) -->
+  <div class="mini-player" id="miniPlayer" aria-hidden="true">
+    <button class="mini-info" id="miniInfo" aria-label="Ouvrir les paroles">
+      <span class="mini-emoji" id="miniEmoji"></span>
+      <div class="mini-text">
+        <span class="mini-title" id="miniTitle"></span>
+        <span class="mini-sub">Appuyer pour les paroles</span>
+      </div>
+    </button>
+    <div class="mini-controls">
+      <button class="mini-btn" id="miniPrev" aria-label="Précédent">
+        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+      </button>
+      <button class="mini-btn mini-btn--play" id="miniPlay" aria-label="Lecture / Pause">
+        <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg class="i-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button class="mini-btn" id="miniNext" aria-label="Suivant">
+        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Sheet de paroles -->
+  <div class="sheet-backdrop" id="sheetBackdrop"></div>
+  <div class="sheet" id="sheet" aria-modal="true" role="dialog">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <span class="sheet-emoji" id="sheetEmoji"></span>
+      <h2 class="sheet-title" id="sheetTitle"></h2>
+    </div>
+    <div class="sheet-lyrics" id="sheetLyrics"></div>
+    <div class="sheet-controls">
+      <button class="ctrl-btn" id="sheetPrev" aria-label="Précédent">
+        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+      </button>
+      <button class="ctrl-btn ctrl-btn--play" id="sheetPlay" aria-label="Lecture / Pause">
+        <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg class="i-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button class="ctrl-btn" id="sheetNext" aria-label="Suivant">
+        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<audio id="audio" preload="none"></audio>
+<script src="js/app.js"></script>
+</body>
+</html>
