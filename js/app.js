@@ -651,6 +651,7 @@ let dragCardEl = null;
 let ghost = null;
 let isDragging = false;
 let scrollInterval = null;
+let scrollZone = 0; // -1 haut, 0 neutre, 1 bas
 
 function toggleEditMode() {
   state.editMode = !state.editMode;
@@ -682,13 +683,13 @@ function moveDrag(touch) {
   ghost.style.left = (touch.clientX - rect.width / 2) + 'px';
   ghost.style.top = (touch.clientY - rect.height / 2) + 'px';
 
-  // Auto-scroll quand le doigt approche du bord
-  clearInterval(scrollInterval);
+  // Auto-scroll — ne redémarre l'interval que si la zone change
   const EDGE = 90, SPEED = 10;
-  if (touch.clientY < EDGE) {
-    scrollInterval = setInterval(() => window.scrollBy(0, -SPEED), 16);
-  } else if (touch.clientY > window.innerHeight - EDGE) {
-    scrollInterval = setInterval(() => window.scrollBy(0, SPEED), 16);
+  const zone = touch.clientY < EDGE ? -1 : touch.clientY > window.innerHeight - EDGE ? 1 : 0;
+  if (zone !== scrollZone) {
+    clearInterval(scrollInterval);
+    scrollInterval = zone !== 0 ? setInterval(() => window.scrollBy(0, zone * SPEED), 16) : null;
+    scrollZone = zone;
   }
 
   ghost.style.visibility = 'hidden';
@@ -717,6 +718,7 @@ function endDrag() {
 
   clearInterval(scrollInterval);
   scrollInterval = null;
+  scrollZone = 0;
   ghost?.remove();
   ghost = null;
   document.querySelectorAll('.song-card.is-dragging, .song-card.drag-over')
