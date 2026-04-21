@@ -320,6 +320,26 @@ Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.`,
   },
   {
+    id: 'comptine-21',
+    title: "Dodo l'enfant do",
+    emoji: '🌙',
+    audio: 'assets/audio/comptine-21.mp3',
+    lyrics: `Dodo, l'enfant do,
+L'enfant dormira bien vite.
+Dodo, l'enfant do,
+L'enfant dormira bientôt.
+
+Une poule blanche
+Est là dans la grange,
+Qui va faire un petit coco
+Pour l'enfant qui va faire dodo.
+
+Dodo, l'enfant do,
+L'enfant dormira bien vite.
+Dodo, l'enfant do,
+L'enfant dormira bientôt.`,
+  },
+  {
     id: 'comptine-20',
     title: "La chanson de l'alphabet",
     emoji: '🔤',
