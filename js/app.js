@@ -511,6 +511,7 @@ const state = {
   currentSongId: null,
   isPlaying: false,
   sheetOpen: false,
+  editMode: false,
   orderedSongs: getOrderedSongs(),
   wakeLock: null,
 };
@@ -519,6 +520,7 @@ const $ = (id) => document.getElementById(id);
 
 const el = {
   grid:        $('grid'),
+  editBtn:     $('editBtn'),
   miniPlayer:  $('miniPlayer'),
   miniInfo:    $('miniInfo'),
   miniEmoji:   $('miniEmoji'),
@@ -640,26 +642,29 @@ el.sheet.addEventListener('touchstart', e => { sheetTouchStartY = e.touches[0].c
 el.sheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - sheetTouchStartY > 60) closeSheet(); }, { passive: true });
 
 /* =========================================================
-   Drag & drop — réordonner les cartes (long press)
+   Mode édition + drag & drop
    ========================================================= */
 
 let dragId = null;
 let dragOverId = null;
 let dragCardEl = null;
 let ghost = null;
-let longPressTimer = null;
 let isDragging = false;
+
+function toggleEditMode() {
+  state.editMode = !state.editMode;
+  el.editBtn.textContent = state.editMode ? '✅ Terminer' : '✏️ Modifier l\'ordre';
+  el.editBtn.classList.toggle('is-active', state.editMode);
+  render();
+}
 
 function startDrag(card, touch) {
   isDragging = true;
   dragId = card.dataset.id;
   dragCardEl = card;
   card.classList.add('is-dragging');
-
-  // Vibration feedback
   navigator.vibrate?.(40);
 
-  // Créer le ghost
   const rect = card.getBoundingClientRect();
   ghost = card.cloneNode(true);
   ghost.className = 'drag-ghost';
@@ -690,9 +695,7 @@ function moveDrag(touch) {
 }
 
 function endDrag() {
-  clearTimeout(longPressTimer);
-
-  if (isDragging && dragId && dragOverId) {
+  if (dragId && dragOverId) {
     const fromIdx = state.orderedSongs.findIndex(s => s.id === dragId);
     const toIdx = state.orderedSongs.findIndex(s => s.id === dragOverId);
     if (fromIdx !== -1 && toIdx !== -1) {
@@ -703,33 +706,31 @@ function endDrag() {
 
   ghost?.remove();
   ghost = null;
-  document.querySelectorAll('.song-card.is-dragging, .song-card.drag-over').forEach(c => {
-    c.classList.remove('is-dragging', 'drag-over');
-  });
+  document.querySelectorAll('.song-card.is-dragging, .song-card.drag-over')
+    .forEach(c => c.classList.remove('is-dragging', 'drag-over'));
   dragId = null;
   dragOverId = null;
   dragCardEl = null;
-
-  if (isDragging) {
-    isDragging = false;
-    render();
-  }
+  isDragging = false;
+  render();
 }
 
 el.grid.addEventListener('touchstart', e => {
+  if (!state.editMode) return;
   const card = e.target.closest('.song-card');
-  if (!card) return;
-  longPressTimer = setTimeout(() => startDrag(card, e.touches[0]), 450);
+  if (card) startDrag(card, e.touches[0]);
 }, { passive: true });
 
 el.grid.addEventListener('touchmove', e => {
-  if (!isDragging) { clearTimeout(longPressTimer); return; }
+  if (!isDragging) return;
   e.preventDefault();
   moveDrag(e.touches[0]);
 }, { passive: false });
 
-el.grid.addEventListener('touchend', () => endDrag(), { passive: true });
-el.grid.addEventListener('touchcancel', () => endDrag(), { passive: true });
+el.grid.addEventListener('touchend', () => { if (isDragging) endDrag(); }, { passive: true });
+el.grid.addEventListener('touchcancel', () => { if (isDragging) endDrag(); }, { passive: true });
+
+el.editBtn.addEventListener('click', toggleEditMode);
 
 /* =========================================================
    Render
@@ -742,13 +743,14 @@ function renderGrid() {
     const isCurrent = song.id === state.currentSongId;
 
     return `
-      <div class="song-card${isCurrent && state.isPlaying ? ' is-active' : ''}"
+      <div class="song-card${isCurrent && state.isPlaying ? ' is-active' : ''}${state.editMode ? ' edit-mode' : ''}"
            data-id="${song.id}"
            style="--c-from:${pal.from};--c-to:${pal.to};--c-accent:${pal.accent}"
            role="button" tabindex="0" aria-label="${song.title}">
+        <div class="card-handle">≡</div>
         <div class="card-media">
           <span>${song.emoji}</span>
-          ${isCurrent && state.isPlaying ? `<div class="card-eq" aria-hidden="true"><span></span><span></span><span></span></div>` : ''}
+          ${isCurrent && state.isPlaying && !state.editMode ? `<div class="card-eq" aria-hidden="true"><span></span><span></span><span></span></div>` : ''}
         </div>
         <span class="card-title">${song.title}</span>
       </div>
@@ -777,7 +779,7 @@ function render() {
    ========================================================= */
 
 el.grid.addEventListener('click', e => {
-  if (isDragging) return;
+  if (isDragging || state.editMode) return;
   const card = e.target.closest('.song-card');
   if (!card) return;
   const id = card.dataset.id;

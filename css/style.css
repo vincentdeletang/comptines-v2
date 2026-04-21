@@ -68,11 +68,37 @@ svg { display: block; fill: currentColor; }
   letter-spacing: -0.02em;
 }
 
-.header-sub {
-  font-size: .75rem;
-  opacity: .7;
-  margin-top: 2px;
+.edit-btn {
+  margin-top: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.2);
+  color: #fff;
+  font-size: .8125rem;
+  font-weight: 600;
+  transition: background 150ms;
 }
+
+.edit-btn.is-active {
+  background: rgba(255,255,255,.4);
+}
+
+/* Mode édition — overlay ≡ sur chaque carte */
+.card-handle {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.22);
+  border-radius: var(--radius-card);
+  color: white;
+  font-size: 2.5rem;
+  z-index: 3;
+  letter-spacing: 2px;
+}
+
+.edit-mode .card-handle { display: flex; }
 
 /* =========================================================
    Main grid
