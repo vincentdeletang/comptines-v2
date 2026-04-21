@@ -2,7 +2,7 @@
   "name": "Comptines pour bébé",
   "short_name": "Comptines",
   "description": "Comptines et berceuses pour les tout-petits",
-  "start_url": "/",
+  "start_url": "/comptines-v2/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#FBF5FF",
