@@ -487,65 +487,79 @@ const PALETTES = [
 ];
 
 /* =========================================================
+   Ordre persisté
+   ========================================================= */
+
+function getOrderedSongs() {
+  const saved = localStorage.getItem('order');
+  if (!saved) return [...SONGS];
+  const ids = JSON.parse(saved);
+  const ordered = ids.map(id => SONGS.find(s => s.id === id)).filter(Boolean);
+  const newSongs = SONGS.filter(s => !ids.includes(s.id));
+  return [...ordered, ...newSongs];
+}
+
+function saveOrder() {
+  localStorage.setItem('order', JSON.stringify(state.orderedSongs.map(s => s.id)));
+}
+
+/* =========================================================
    État
    ========================================================= */
 
 const state = {
-  currentIndex: -1,
+  currentSongId: null,
   isPlaying: false,
-  tab: JSON.parse(localStorage.getItem('fav') || '[]').length > 0 ? 'favorites' : 'all',
   sheetOpen: false,
-  favorites: new Set(JSON.parse(localStorage.getItem('fav') || '[]')),
+  orderedSongs: getOrderedSongs(),
   wakeLock: null,
 };
-
-/* =========================================================
-   DOM refs
-   ========================================================= */
 
 const $ = (id) => document.getElementById(id);
 
 const el = {
-  grid:          $('grid'),
-  miniPlayer:    $('miniPlayer'),
-  miniInfo:      $('miniInfo'),
-  miniEmoji:     $('miniEmoji'),
-  miniTitle:     $('miniTitle'),
-  miniPlay:      $('miniPlay'),
-  miniPrev:      $('miniPrev'),
-  miniNext:      $('miniNext'),
-  backdrop:      $('sheetBackdrop'),
-  sheet:         $('sheet'),
-  sheetEmoji:    $('sheetEmoji'),
-  sheetTitle:    $('sheetTitle'),
-  sheetLyrics:   $('sheetLyrics'),
-  sheetPlay:     $('sheetPlay'),
-  sheetPrev:     $('sheetPrev'),
-  sheetNext:     $('sheetNext'),
-  audio:         $('audio'),
+  grid:        $('grid'),
+  miniPlayer:  $('miniPlayer'),
+  miniInfo:    $('miniInfo'),
+  miniEmoji:   $('miniEmoji'),
+  miniTitle:   $('miniTitle'),
+  miniPlay:    $('miniPlay'),
+  miniPrev:    $('miniPrev'),
+  miniNext:    $('miniNext'),
+  backdrop:    $('sheetBackdrop'),
+  sheet:       $('sheet'),
+  sheetEmoji:  $('sheetEmoji'),
+  sheetTitle:  $('sheetTitle'),
+  sheetLyrics: $('sheetLyrics'),
+  sheetPlay:   $('sheetPlay'),
+  sheetPrev:   $('sheetPrev'),
+  sheetNext:   $('sheetNext'),
+  audio:       $('audio'),
 };
 
 /* =========================================================
    Audio
    ========================================================= */
 
-function playSong(index) {
-  const song = SONGS[index];
+function getSong(id) {
+  return SONGS.find(s => s.id === id) || null;
+}
+
+function playSong(id) {
+  const song = getSong(id);
   if (!song) return;
 
-  if (state.currentIndex !== index) {
+  if (state.currentSongId !== id) {
     el.audio.src = song.audio;
     el.audio.currentTime = song.offset || 0;
-    state.currentIndex = index;
+    state.currentSongId = id;
   }
 
-  el.audio.play()
-    .then(() => {
-      state.isPlaying = true;
-      render();
-      acquireWakeLock();
-    })
-    .catch(() => {});
+  el.audio.play().then(() => {
+    state.isPlaying = true;
+    render();
+    acquireWakeLock();
+  }).catch(() => {});
 }
 
 function pause() {
@@ -556,23 +570,26 @@ function pause() {
 }
 
 function togglePlay() {
-  if (state.isPlaying) {
-    pause();
-  } else if (state.currentIndex >= 0) {
-    playSong(state.currentIndex);
-  }
+  if (state.isPlaying) pause();
+  else if (state.currentSongId) playSong(state.currentSongId);
 }
 
 function next() {
-  playSong((state.currentIndex + 1) % SONGS.length);
+  const idx = state.orderedSongs.findIndex(s => s.id === state.currentSongId);
+  const nextSong = state.orderedSongs[(idx + 1) % state.orderedSongs.length];
+  if (nextSong) playSong(nextSong.id);
 }
 
 function prev() {
-  if (el.audio.currentTime > 3) {
-    el.audio.currentTime = 0;
+  const song = getSong(state.currentSongId);
+  const startTime = song?.offset || 0;
+  if (el.audio.currentTime > startTime + 3) {
+    el.audio.currentTime = startTime;
     return;
   }
-  playSong((state.currentIndex - 1 + SONGS.length) % SONGS.length);
+  const idx = state.orderedSongs.findIndex(s => s.id === state.currentSongId);
+  const prevSong = state.orderedSongs[(idx - 1 + state.orderedSongs.length) % state.orderedSongs.length];
+  if (prevSong) playSong(prevSong.id);
 }
 
 el.audio.loop = true;
@@ -583,9 +600,7 @@ el.audio.loop = true;
 
 async function acquireWakeLock() {
   if (!('wakeLock' in navigator)) return;
-  try {
-    state.wakeLock = await navigator.wakeLock.request('screen');
-  } catch {}
+  try { state.wakeLock = await navigator.wakeLock.request('screen'); } catch {}
 }
 
 function releaseWakeLock() {
@@ -594,27 +609,15 @@ function releaseWakeLock() {
 }
 
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && state.isPlaying) {
-    acquireWakeLock();
-  }
+  if (document.visibilityState === 'visible' && state.isPlaying) acquireWakeLock();
 });
-
-/* =========================================================
-   Favoris
-   ========================================================= */
-
-function toggleFavorite(id) {
-  state.favorites.has(id) ? state.favorites.delete(id) : state.favorites.add(id);
-  localStorage.setItem('fav', JSON.stringify([...state.favorites]));
-  render();
-}
 
 /* =========================================================
    Sheet
    ========================================================= */
 
 function openSheet() {
-  const song = SONGS[state.currentIndex];
+  const song = getSong(state.currentSongId);
   if (!song) return;
   el.sheetEmoji.textContent = song.emoji;
   el.sheetTitle.textContent = song.title;
@@ -623,7 +626,7 @@ function openSheet() {
   el.sheet.classList.add('is-open');
   el.backdrop.classList.add('is-open');
   state.sheetOpen = true;
-  updateSheetPlayBtn();
+  el.sheetPlay.classList.toggle('is-playing', state.isPlaying);
 }
 
 function closeSheet() {
@@ -632,57 +635,120 @@ function closeSheet() {
   state.sheetOpen = false;
 }
 
-function updateSheetPlayBtn() {
-  el.sheetPlay.classList.toggle('is-playing', state.isPlaying);
+let sheetTouchStartY = 0;
+el.sheet.addEventListener('touchstart', e => { sheetTouchStartY = e.touches[0].clientY; }, { passive: true });
+el.sheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - sheetTouchStartY > 60) closeSheet(); }, { passive: true });
+
+/* =========================================================
+   Drag & drop — réordonner les cartes (long press)
+   ========================================================= */
+
+let dragId = null;
+let dragOverId = null;
+let dragCardEl = null;
+let ghost = null;
+let longPressTimer = null;
+let isDragging = false;
+
+function startDrag(card, touch) {
+  isDragging = true;
+  dragId = card.dataset.id;
+  dragCardEl = card;
+  card.classList.add('is-dragging');
+
+  // Vibration feedback
+  navigator.vibrate?.(40);
+
+  // Créer le ghost
+  const rect = card.getBoundingClientRect();
+  ghost = card.cloneNode(true);
+  ghost.className = 'drag-ghost';
+  ghost.style.width = rect.width + 'px';
+  ghost.style.left = rect.left + 'px';
+  ghost.style.top = rect.top + 'px';
+  document.body.appendChild(ghost);
 }
 
-/* Sheet swipe-down gesture */
-let sheetTouchStartY = 0;
-el.sheet.addEventListener('touchstart', (e) => {
-  sheetTouchStartY = e.touches[0].clientY;
+function moveDrag(touch) {
+  if (!ghost) return;
+  const rect = dragCardEl.getBoundingClientRect();
+  ghost.style.left = (touch.clientX - rect.width / 2) + 'px';
+  ghost.style.top = (touch.clientY - rect.height / 2) + 'px';
+
+  ghost.style.visibility = 'hidden';
+  const below = document.elementFromPoint(touch.clientX, touch.clientY);
+  ghost.style.visibility = 'visible';
+
+  document.querySelectorAll('.song-card.drag-over').forEach(c => c.classList.remove('drag-over'));
+  const targetCard = below?.closest('.song-card');
+  if (targetCard && targetCard.dataset.id !== dragId) {
+    targetCard.classList.add('drag-over');
+    dragOverId = targetCard.dataset.id;
+  } else {
+    dragOverId = null;
+  }
+}
+
+function endDrag() {
+  clearTimeout(longPressTimer);
+
+  if (isDragging && dragId && dragOverId) {
+    const fromIdx = state.orderedSongs.findIndex(s => s.id === dragId);
+    const toIdx = state.orderedSongs.findIndex(s => s.id === dragOverId);
+    if (fromIdx !== -1 && toIdx !== -1) {
+      state.orderedSongs.splice(toIdx, 0, state.orderedSongs.splice(fromIdx, 1)[0]);
+      saveOrder();
+    }
+  }
+
+  ghost?.remove();
+  ghost = null;
+  document.querySelectorAll('.song-card.is-dragging, .song-card.drag-over').forEach(c => {
+    c.classList.remove('is-dragging', 'drag-over');
+  });
+  dragId = null;
+  dragOverId = null;
+  dragCardEl = null;
+
+  if (isDragging) {
+    isDragging = false;
+    render();
+  }
+}
+
+el.grid.addEventListener('touchstart', e => {
+  const card = e.target.closest('.song-card');
+  if (!card) return;
+  longPressTimer = setTimeout(() => startDrag(card, e.touches[0]), 450);
 }, { passive: true });
 
-el.sheet.addEventListener('touchend', (e) => {
-  const dy = e.changedTouches[0].clientY - sheetTouchStartY;
-  if (dy > 60) closeSheet();
-}, { passive: true });
+el.grid.addEventListener('touchmove', e => {
+  if (!isDragging) { clearTimeout(longPressTimer); return; }
+  e.preventDefault();
+  moveDrag(e.touches[0]);
+}, { passive: false });
+
+el.grid.addEventListener('touchend', () => endDrag(), { passive: true });
+el.grid.addEventListener('touchcancel', () => endDrag(), { passive: true });
 
 /* =========================================================
    Render
    ========================================================= */
 
 function renderGrid() {
-  const songs = state.tab === 'favorites'
-    ? SONGS.filter(s => state.favorites.has(s.id))
-    : SONGS;
-
-  if (songs.length === 0) {
-    el.grid.innerHTML = `<p class="empty-state">Aucun favori pour l'instant.<br>Appuyez sur ❤️ pour en ajouter !</p>`;
-    return;
-  }
-
-  el.grid.innerHTML = songs.map((song) => {
+  el.grid.innerHTML = state.orderedSongs.map((song) => {
     const globalIdx = SONGS.indexOf(song);
     const pal = PALETTES[globalIdx % PALETTES.length];
-    const isCurrent = globalIdx === state.currentIndex;
-    const isFav = state.favorites.has(song.id);
+    const isCurrent = song.id === state.currentSongId;
 
     return `
-      <div
-        class="song-card${isCurrent && state.isPlaying ? ' is-active' : ''}"
-        data-index="${globalIdx}"
-        style="--c-from:${pal.from};--c-to:${pal.to};--c-accent:${pal.accent}"
-        role="button"
-        tabindex="0"
-        aria-label="${song.title}"
-      >
+      <div class="song-card${isCurrent && state.isPlaying ? ' is-active' : ''}"
+           data-id="${song.id}"
+           style="--c-from:${pal.from};--c-to:${pal.to};--c-accent:${pal.accent}"
+           role="button" tabindex="0" aria-label="${song.title}">
         <div class="card-media">
-          <span class="card-emoji">${song.emoji}</span>
-          <button class="card-fav${isFav ? ' is-fav' : ''}" data-id="${song.id}" aria-label="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">♥</button>
-          ${isCurrent && state.isPlaying ? `
-            <div class="card-eq" aria-hidden="true">
-              <span></span><span></span><span></span>
-            </div>` : ''}
+          <span>${song.emoji}</span>
+          ${isCurrent && state.isPlaying ? `<div class="card-eq" aria-hidden="true"><span></span><span></span><span></span></div>` : ''}
         </div>
         <span class="card-title">${song.title}</span>
       </div>
@@ -691,13 +757,10 @@ function renderGrid() {
 }
 
 function renderMiniPlayer() {
-  const hasSong = state.currentIndex >= 0;
+  const hasSong = !!state.currentSongId;
   el.miniPlayer.classList.toggle('is-visible', hasSong);
-  el.miniPlayer.setAttribute('aria-hidden', String(!hasSong));
-
   if (!hasSong) return;
-
-  const song = SONGS[state.currentIndex];
+  const song = getSong(state.currentSongId);
   el.miniEmoji.textContent = song.emoji;
   el.miniTitle.textContent = song.title;
   el.miniPlay.classList.toggle('is-playing', state.isPlaying);
@@ -706,59 +769,35 @@ function renderMiniPlayer() {
 function render() {
   renderGrid();
   renderMiniPlayer();
-  if (state.sheetOpen) updateSheetPlayBtn();
+  if (state.sheetOpen) el.sheetPlay.classList.toggle('is-playing', state.isPlaying);
 }
 
 /* =========================================================
-   Event listeners
+   Events
    ========================================================= */
 
-/* Grille — tap sur card ou sur bouton favori */
-function handleGridClick(e) {
-  const favBtn = e.target.closest('.card-fav');
-  if (favBtn) {
-    toggleFavorite(favBtn.dataset.id);
-    return;
-  }
+el.grid.addEventListener('click', e => {
+  if (isDragging) return;
   const card = e.target.closest('.song-card');
   if (!card) return;
-  const index = Number(card.dataset.index);
-  if (index === state.currentIndex && state.isPlaying) {
-    pause();
-  } else {
-    playSong(index);
-  }
-}
-
-el.grid.addEventListener('click', handleGridClick);
-el.grid.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleGridClick(e); }
+  const id = card.dataset.id;
+  if (id === state.currentSongId && state.isPlaying) pause();
+  else playSong(id);
 });
 
-/* Mini-player */
 el.miniInfo.addEventListener('click', openSheet);
 el.miniPlay.addEventListener('click', togglePlay);
 el.miniPrev.addEventListener('click', prev);
 el.miniNext.addEventListener('click', next);
 
-/* Sheet */
 el.backdrop.addEventListener('click', closeSheet);
-el.sheetPlay.addEventListener('click', togglePlay);
-el.sheetPrev.addEventListener('click', prev);
-el.sheetNext.addEventListener('click', next);
+el.sheetPlay.addEventListener('click', () => { togglePlay(); el.sheetPlay.classList.toggle('is-playing', state.isPlaying); });
+el.sheetPrev.addEventListener('click', () => { prev(); setTimeout(() => { const s = getSong(state.currentSongId); if (s && state.sheetOpen) { el.sheetEmoji.textContent = s.emoji; el.sheetTitle.textContent = s.title; el.sheetLyrics.textContent = s.lyrics; el.sheetLyrics.scrollTop = 0; } }, 50); });
+el.sheetNext.addEventListener('click', () => { next(); setTimeout(() => { const s = getSong(state.currentSongId); if (s && state.sheetOpen) { el.sheetEmoji.textContent = s.emoji; el.sheetTitle.textContent = s.title; el.sheetLyrics.textContent = s.lyrics; el.sheetLyrics.scrollTop = 0; } }, 50); });
 
-/* Tabs */
-document.querySelectorAll('.tab').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    state.tab = btn.dataset.tab;
-    render();
-  });
-});
+el.audio.addEventListener('pause', () => { if (state.sheetOpen) el.sheetPlay.classList.remove('is-playing'); });
 
-/* Keyboard */
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && state.sheetOpen) closeSheet();
   if (e.key === ' ') { e.preventDefault(); togglePlay(); }
   if (e.key === 'ArrowRight') next();
@@ -766,41 +805,15 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* =========================================================
-   Mise à jour sheet après changement de chanson (auto-next)
-   ========================================================= */
-
-el.audio.addEventListener('play', () => {
-  if (state.sheetOpen) {
-    const song = SONGS[state.currentIndex];
-    el.sheetEmoji.textContent = song.emoji;
-    el.sheetTitle.textContent = song.title;
-    el.sheetLyrics.textContent = song.lyrics;
-    el.sheetLyrics.scrollTop = 0;
-    updateSheetPlayBtn();
-  }
-});
-
-el.audio.addEventListener('pause', () => {
-  if (state.sheetOpen) updateSheetPlayBtn();
-});
-
-/* =========================================================
-   Service Worker (PWA)
+   Service Worker
    ========================================================= */
 
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  });
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 
 /* =========================================================
    Init
    ========================================================= */
-
-// Sync tab actif visuellement avec le state initial
-document.querySelectorAll('.tab').forEach(btn => {
-  btn.classList.toggle('active', btn.dataset.tab === state.tab);
-});
 
 render();

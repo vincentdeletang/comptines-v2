@@ -9,15 +9,13 @@
   --text-muted: #71717A;
   --primary: #A855F7;
   --primary-dark: #9333EA;
-  --primary-light: #E9D5FF;
   --shadow-sm: 0 1px 4px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
   --shadow-md: 0 4px 16px rgba(0,0,0,.10);
   --shadow-lg: 0 16px 48px rgba(0,0,0,.14);
   --radius-card: 20px;
-  --radius-btn: 50px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --header-h: 108px;
+  --header-h: 88px;
   --mini-h: 76px;
 }
 
@@ -27,11 +25,7 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  height: 100%;
-  font-size: 16px;
-  -webkit-text-size-adjust: 100%;
-}
+html { height: 100%; font-size: 16px; -webkit-text-size-adjust: 100%; }
 
 body {
   min-height: 100dvh;
@@ -50,10 +44,7 @@ button {
   touch-action: manipulation;
 }
 
-svg {
-  display: block;
-  fill: currentColor;
-}
+svg { display: block; fill: currentColor; }
 
 /* =========================================================
    Header
@@ -61,12 +52,10 @@ svg {
 
 .header {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   z-index: 20;
-  padding-top: calc(var(--safe-top) + 16px);
-  padding-bottom: 12px;
+  padding-top: calc(var(--safe-top) + 14px);
+  padding-bottom: 10px;
   padding-left: 20px;
   padding-right: 20px;
   background: linear-gradient(145deg, #EC4899 0%, #A855F7 100%);
@@ -77,26 +66,12 @@ svg {
   font-size: 1.375rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  margin-bottom: 10px;
 }
 
-.tabs {
-  display: flex;
-  gap: 8px;
-}
-
-.tab {
-  padding: 6px 16px;
-  border-radius: var(--radius-btn);
-  font-size: .875rem;
-  font-weight: 600;
-  color: rgba(255,255,255,.75);
-  transition: background 150ms, color 150ms;
-}
-
-.tab.active {
-  background: rgba(255,255,255,.22);
-  color: #fff;
+.header-sub {
+  font-size: .75rem;
+  opacity: .7;
+  margin-top: 2px;
 }
 
 /* =========================================================
@@ -114,15 +89,6 @@ svg {
   align-content: start;
 }
 
-.empty-state {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--text-muted);
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
 /* =========================================================
    Song card
    ========================================================= */
@@ -135,19 +101,41 @@ svg {
   background: var(--white);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
-  transition: transform 120ms, box-shadow 120ms;
+  transition: transform 120ms, box-shadow 120ms, opacity 120ms;
   outline: none;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
 }
 
-.song-card:active {
-  transform: scale(.95);
-}
+.song-card:active { transform: scale(.95); }
 
 .song-card.is-active {
   box-shadow: 0 0 0 3px var(--primary), var(--shadow-md);
+}
+
+/* État drag */
+.song-card.is-dragging {
+  opacity: .35;
+  transform: scale(.97);
+}
+
+.song-card.drag-over {
+  box-shadow: 0 0 0 3px #EC4899, var(--shadow-md);
+  transform: scale(1.03);
+}
+
+/* Ghost (clone qui suit le doigt) */
+.drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  opacity: .9;
+  transform: scale(1.07) rotate(2deg);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  transition: none !important;
 }
 
 /* Emoji area */
@@ -164,7 +152,7 @@ svg {
   overflow: hidden;
 }
 
-/* Equalizer bars when playing */
+/* Equalizer */
 .card-eq {
   position: absolute;
   bottom: 8px;
@@ -207,41 +195,16 @@ svg {
   overflow: hidden;
 }
 
-/* Favorite button */
-.card-fav {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.88);
-  box-shadow: 0 2px 6px rgba(0,0,0,.20);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  line-height: 1;
-  color: #6B7280;
-  transition: color 180ms, transform 150ms;
-}
-
-.card-fav.is-fav { color: #EF4444; }
-.card-fav:active { transform: scale(1.35); }
-
 /* =========================================================
    Mini-player
    ========================================================= */
 
 .mini-player {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   z-index: 30;
   display: flex;
   align-items: center;
-  gap: 0;
   height: calc(var(--mini-h) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
   padding-left: 16px;
@@ -252,9 +215,7 @@ svg {
   transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.mini-player.is-visible {
-  transform: translateY(0);
-}
+.mini-player.is-visible { transform: translateY(0); }
 
 .mini-info {
   flex: 1;
@@ -266,10 +227,7 @@ svg {
   text-align: left;
 }
 
-.mini-emoji {
-  font-size: 2rem;
-  flex-shrink: 0;
-}
+.mini-emoji { font-size: 2rem; flex-shrink: 0; }
 
 .mini-text {
   min-width: 0;
@@ -288,10 +246,7 @@ svg {
   display: block;
 }
 
-.mini-sub {
-  font-size: .75rem;
-  color: var(--text-muted);
-}
+.mini-sub { font-size: .75rem; color: var(--text-muted); }
 
 .mini-controls {
   display: flex;
@@ -301,8 +256,7 @@ svg {
 }
 
 .mini-btn {
-  width: 44px;
-  height: 44px;
+  width: 44px; height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -312,12 +266,10 @@ svg {
 }
 
 .mini-btn svg { width: 22px; height: 22px; }
-
 .mini-btn:active { background: #F4F4F5; }
 
 .mini-btn--play {
-  width: 52px;
-  height: 52px;
+  width: 52px; height: 52px;
   background: var(--primary);
   color: #fff;
   border-radius: 50%;
@@ -327,15 +279,10 @@ svg {
 .mini-btn--play:active { background: var(--primary-dark); }
 .mini-btn--play svg { width: 24px; height: 24px; }
 
-/* play/pause icon toggle */
-.mini-btn .i-pause,
-.ctrl-btn .i-pause { display: none; }
-
-.mini-btn.is-playing .i-play,
-.ctrl-btn.is-playing .i-play { display: none; }
-
-.mini-btn.is-playing .i-pause,
-.ctrl-btn.is-playing .i-pause { display: block; }
+/* play/pause toggle */
+.mini-btn .i-pause, .ctrl-btn .i-pause { display: none; }
+.mini-btn.is-playing .i-play, .ctrl-btn.is-playing .i-play { display: none; }
+.mini-btn.is-playing .i-pause, .ctrl-btn.is-playing .i-pause { display: block; }
 
 /* =========================================================
    Sheet backdrop
@@ -351,20 +298,15 @@ svg {
   transition: opacity 320ms;
 }
 
-.sheet-backdrop.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
+.sheet-backdrop.is-open { opacity: 1; pointer-events: auto; }
 
 /* =========================================================
-   Sheet (bottom sheet de paroles)
+   Sheet paroles
    ========================================================= */
 
 .sheet {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   z-index: 50;
   display: flex;
   flex-direction: column;
@@ -376,14 +318,11 @@ svg {
   overflow: hidden;
 }
 
-.sheet.is-open {
-  transform: translateY(0);
-}
+.sheet.is-open { transform: translateY(0); }
 
 .sheet-handle {
   flex-shrink: 0;
-  width: 40px;
-  height: 4px;
+  width: 40px; height: 4px;
   border-radius: 2px;
   background: #E4E4E7;
   margin: 12px auto 0;
@@ -432,8 +371,7 @@ svg {
 }
 
 .ctrl-btn {
-  width: 56px;
-  height: 56px;
+  width: 56px; height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -446,8 +384,7 @@ svg {
 .ctrl-btn:active { background: #F4F4F5; }
 
 .ctrl-btn--play {
-  width: 72px;
-  height: 72px;
+  width: 72px; height: 72px;
   background: var(--primary);
   color: #fff;
 }
@@ -456,7 +393,7 @@ svg {
 .ctrl-btn--play svg { width: 36px; height: 36px; }
 
 /* =========================================================
-   Animations grille
+   Animation grille
    ========================================================= */
 
 @keyframes fadeUp {
@@ -464,11 +401,8 @@ svg {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.song-card {
-  animation: fadeUp 300ms both;
-}
+.song-card { animation: fadeUp 300ms both; }
 
-/* stagger via nth-child */
 .song-card:nth-child(1)  { animation-delay:   0ms; }
 .song-card:nth-child(2)  { animation-delay:  40ms; }
 .song-card:nth-child(3)  { animation-delay:  80ms; }
