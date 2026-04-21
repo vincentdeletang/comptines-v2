@@ -321,6 +321,19 @@ Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.`,
   },
   {
+    id: 'comptine-23',
+    title: 'Brille brille petite étoile',
+    emoji: '⭐',
+    audio: 'assets/audio/comptine-23.mp3',
+    lyrics: `Brille brille petite étoile,
+Qui es-tu ? Quelle est ta toile ?
+Là-haut dans le ciel si bleu,
+Comme un diamant lumineux.
+
+Brille brille petite étoile,
+Qui es-tu ? Quelle est ta toile ?`,
+  },
+  {
     id: 'comptine-22',
     title: 'Tape tape petites mains',
     emoji: '👏',
