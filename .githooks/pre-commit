@@ -1,0 +1,5 @@
+#!/bin/sh
+# Bumpe la version du cache SW à chaque commit
+VERSION="comptines-$(date +%Y%m%d%H%M%S)"
+sed -i "s/const CACHE = .*/const CACHE = '$VERSION';/" sw.js
+git add sw.js
