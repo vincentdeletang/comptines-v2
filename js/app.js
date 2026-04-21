@@ -645,13 +645,8 @@ el.sheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - s
    Mode édition + drag & drop
    ========================================================= */
 
-let dragId = null;
-let dragOverId = null;
-let dragCardEl = null;
-let ghost = null;
 let isDragging = false;
-let scrollInterval = null;
-let scrollZone = 0; // -1 haut, 0 neutre, 1 bas
+let sortable = null;
 
 function toggleEditMode() {
   state.editMode = !state.editMode;
@@ -659,91 +654,33 @@ function toggleEditMode() {
   el.editBtn.querySelector('.fab-icon').textContent = state.editMode ? '✅' : '⇅';
   el.editBtn.classList.toggle('is-active', state.editMode);
   render();
+  if (state.editMode) initSortable();
+  else destroySortable();
 }
 
-function startDrag(card, touch) {
-  isDragging = true;
-  dragId = card.dataset.id;
-  dragCardEl = card;
-  card.classList.add('is-dragging');
-  navigator.vibrate?.(40);
-
-  const rect = card.getBoundingClientRect();
-  ghost = card.cloneNode(true);
-  ghost.className = 'drag-ghost';
-  ghost.style.width = rect.width + 'px';
-  ghost.style.left = rect.left + 'px';
-  ghost.style.top = rect.top + 'px';
-  document.body.appendChild(ghost);
-}
-
-function moveDrag(touch) {
-  if (!ghost) return;
-  const rect = dragCardEl.getBoundingClientRect();
-  ghost.style.left = (touch.clientX - rect.width / 2) + 'px';
-  ghost.style.top = (touch.clientY - rect.height / 2) + 'px';
-
-  // Auto-scroll — ne redémarre l'interval que si la zone change
-  const EDGE = 90, SPEED = 10;
-  const zone = touch.clientY < EDGE ? -1 : touch.clientY > window.innerHeight - EDGE ? 1 : 0;
-  if (zone !== scrollZone) {
-    clearInterval(scrollInterval);
-    scrollInterval = zone !== 0 ? setInterval(() => window.scrollBy(0, zone * SPEED), 16) : null;
-    scrollZone = zone;
-  }
-
-  ghost.style.visibility = 'hidden';
-  const below = document.elementFromPoint(touch.clientX, touch.clientY);
-  ghost.style.visibility = 'visible';
-
-  document.querySelectorAll('.song-card.drag-over').forEach(c => c.classList.remove('drag-over'));
-  const targetCard = below?.closest('.song-card');
-  if (targetCard && targetCard.dataset.id !== dragId) {
-    targetCard.classList.add('drag-over');
-    dragOverId = targetCard.dataset.id;
-  } else {
-    dragOverId = null;
-  }
-}
-
-function endDrag() {
-  if (dragId && dragOverId) {
-    const fromIdx = state.orderedSongs.findIndex(s => s.id === dragId);
-    const toIdx = state.orderedSongs.findIndex(s => s.id === dragOverId);
-    if (fromIdx !== -1 && toIdx !== -1) {
-      state.orderedSongs.splice(toIdx, 0, state.orderedSongs.splice(fromIdx, 1)[0]);
+function initSortable() {
+  sortable = new Sortable(el.grid, {
+    animation: 150,
+    scroll: true,
+    scrollSensitivity: 80,
+    scrollSpeed: 12,
+    forceFallback: true,
+    fallbackTolerance: 3,
+    onStart: () => { isDragging = true; navigator.vibrate?.(40); },
+    onEnd: (evt) => {
+      isDragging = false;
+      if (evt.oldIndex === evt.newIndex) return;
+      const moved = state.orderedSongs.splice(evt.oldIndex, 1)[0];
+      state.orderedSongs.splice(evt.newIndex, 0, moved);
       saveOrder();
-    }
-  }
-
-  clearInterval(scrollInterval);
-  scrollInterval = null;
-  scrollZone = 0;
-  ghost?.remove();
-  ghost = null;
-  document.querySelectorAll('.song-card.is-dragging, .song-card.drag-over')
-    .forEach(c => c.classList.remove('is-dragging', 'drag-over'));
-  dragId = null;
-  dragOverId = null;
-  dragCardEl = null;
-  isDragging = false;
-  render();
+    },
+  });
 }
 
-el.grid.addEventListener('touchstart', e => {
-  if (!state.editMode) return;
-  const card = e.target.closest('.song-card');
-  if (card) startDrag(card, e.touches[0]);
-}, { passive: true });
-
-el.grid.addEventListener('touchmove', e => {
-  if (!isDragging) return;
-  e.preventDefault();
-  moveDrag(e.touches[0]);
-}, { passive: false });
-
-el.grid.addEventListener('touchend', () => { if (isDragging) endDrag(); }, { passive: true });
-el.grid.addEventListener('touchcancel', () => { if (isDragging) endDrag(); }, { passive: true });
+function destroySortable() {
+  sortable?.destroy();
+  sortable = null;
+}
 
 el.editBtn.addEventListener('click', toggleEditMode);
 

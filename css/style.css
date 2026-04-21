@@ -158,28 +158,15 @@ svg { display: block; fill: currentColor; }
   box-shadow: 0 0 0 3px var(--primary), var(--shadow-md);
 }
 
-/* État drag */
-.song-card.is-dragging {
+/* État drag (géré par SortableJS) */
+.sortable-ghost {
   opacity: .35;
-  transform: scale(.97);
 }
 
-.song-card.drag-over {
-  box-shadow: 0 0 0 3px #EC4899, var(--shadow-md);
-  transform: scale(1.03);
-}
-
-/* Ghost (clone qui suit le doigt) */
-.drag-ghost {
-  position: fixed;
-  pointer-events: none;
-  z-index: 999;
+.sortable-drag {
   opacity: .9;
-  transform: scale(1.07) rotate(2deg);
+  transform: scale(1.05) rotate(1.5deg);
   box-shadow: var(--shadow-lg);
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  transition: none !important;
 }
 
 /* Emoji area */

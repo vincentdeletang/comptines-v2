@@ -1,10 +1,11 @@
-const CACHE = 'comptines-20260421225039';
+const CACHE = 'comptines-20260421225458';
 
 const PRECACHE = [
   '/',
   '/index.html',
   '/css/style.css',
   '/js/app.js',
+  '/js/sortable.min.js',
   '/manifest.json',
   '/assets/audio/comptine-1.mp3',
   '/assets/audio/comptine-2.mp3',
