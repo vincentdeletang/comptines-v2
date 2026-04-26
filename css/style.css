@@ -189,10 +189,14 @@ svg { display: block; fill: currentColor; }
   bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
+  display: none;
   align-items: flex-end;
   gap: 3px;
   height: 16px;
+}
+
+.song-card.is-active:not(.edit-mode) .card-eq {
+  display: flex;
 }
 
 .card-eq span {

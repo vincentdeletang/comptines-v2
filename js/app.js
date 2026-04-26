@@ -941,7 +941,8 @@ function playSong(id) {
   const song = getSong(id);
   if (!song) return;
 
-  if (state.currentSongId !== id) {
+  const isNewSong = state.currentSongId !== id;
+  if (isNewSong) {
     el.audio.src = song.audio;
     el.audio.currentTime = song.offset || 0;
     state.currentSongId = id;
@@ -949,7 +950,9 @@ function playSong(id) {
 
   el.audio.play().then(() => {
     state.isPlaying = true;
-    render();
+    updatePlayState();
+    if (isNewSong) updateMediaSession(song);
+    if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
     acquireWakeLock();
   }).catch(() => {});
 }
@@ -958,7 +961,8 @@ function pause() {
   el.audio.pause();
   state.isPlaying = false;
   releaseWakeLock();
-  render();
+  if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+  updatePlayState();
 }
 
 function togglePlay() {
@@ -1094,7 +1098,7 @@ function renderGrid() {
         <div class="card-handle">≡</div>
         <div class="card-media">
           <span>${song.emoji}</span>
-          ${isCurrent && state.isPlaying && !state.editMode ? `<div class="card-eq" aria-hidden="true"><span></span><span></span><span></span></div>` : ''}
+          <div class="card-eq" aria-hidden="true"><span></span><span></span><span></span></div>
         </div>
         <span class="card-title">${song.title}</span>
       </div>
@@ -1115,6 +1119,15 @@ function renderMiniPlayer() {
 
 function render() {
   renderGrid();
+  renderMiniPlayer();
+  if (state.sheetOpen) el.sheetPlay.classList.toggle('is-playing', state.isPlaying);
+}
+
+function updatePlayState() {
+  el.grid.querySelectorAll('.song-card.is-active').forEach(c => c.classList.remove('is-active'));
+  if (state.isPlaying && state.currentSongId) {
+    el.grid.querySelector(`.song-card[data-id="${state.currentSongId}"]`)?.classList.add('is-active');
+  }
   renderMiniPlayer();
   if (state.sheetOpen) el.sheetPlay.classList.toggle('is-playing', state.isPlaying);
 }
@@ -1150,6 +1163,60 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') next();
   if (e.key === 'ArrowLeft') prev();
 });
+
+/* =========================================================
+   Media Session (lockscreen / notif média)
+   ========================================================= */
+
+const artworkCache = new Map();
+
+function buildArtwork(song) {
+  if (artworkCache.has(song.id)) return artworkCache.get(song.id);
+  const globalIdx = SONGS.indexOf(song);
+  const pal = PALETTES[globalIdx % PALETTES.length];
+
+  const make = (size) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    const grad = ctx.createLinearGradient(0, 0, size, size);
+    grad.addColorStop(0, pal.from);
+    grad.addColorStop(1, pal.to);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, size, size);
+    ctx.font = `${size * 0.55}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(song.emoji, size / 2, size / 2 + size * 0.02);
+    return canvas.toDataURL('image/png');
+  };
+
+  const artwork = [
+    { src: make(256), sizes: '256x256', type: 'image/png' },
+    { src: make(512), sizes: '512x512', type: 'image/png' },
+  ];
+  artworkCache.set(song.id, artwork);
+  return artwork;
+}
+
+function updateMediaSession(song) {
+  if (!('mediaSession' in navigator)) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: song.title,
+    artist: 'Comptines',
+    album: 'Pour bébé',
+    artwork: buildArtwork(song),
+  });
+}
+
+if ('mediaSession' in navigator) {
+  navigator.mediaSession.setActionHandler('play', () => {
+    if (state.currentSongId) playSong(state.currentSongId);
+  });
+  navigator.mediaSession.setActionHandler('pause', pause);
+  navigator.mediaSession.setActionHandler('previoustrack', prev);
+  navigator.mediaSession.setActionHandler('nexttrack', next);
+}
 
 /* =========================================================
    Service Worker
