@@ -19,15 +19,40 @@ Nous le promettaient les prophètes.
 Depuis plus de quatre mille ans,
 Nous attendions cet heureux temps.
 
+Il est né le divin enfant,
+Jouez hautbois, résonnez musettes !
+Il est né le divin enfant,
+Chantons tous son avènement !
+
 Ah ! Qu'il est beau, qu'il est charmant !
 Ah ! Que ses grâces sont parfaites !
 Ah ! Qu'il est beau, qu'il est charmant !
 Qu'il est doux ce divin enfant !
 
+Il est né le divin enfant,
+Jouez hautbois, résonnez musettes !
+Il est né le divin enfant,
+Chantons tous son avènement !
+
 Une étable est son logement,
 Un peu de paille est sa couchette.
 Une étable est son logement,
-Pour un Dieu quel abaissement !`,
+Pour un Dieu quel abaissement !
+
+Il est né le divin enfant,
+Jouez hautbois, résonnez musettes !
+Il est né le divin enfant,
+Chantons tous son avènement !
+
+Partez, grands rois de l'Orient !
+Venez vous unir à nos fêtes
+Partez, grands rois de l'Orient !
+Venez adorer cet enfant !
+
+Il est né le divin enfant,
+Jouez hautbois, résonnez musettes !
+Il est né le divin enfant,
+Chantons tous son avènement !`,
   },
   {
     id: 'comptine-2',
@@ -52,7 +77,25 @@ Je suis dans mon lit.
 Va chez la voisine,
 Je crois qu'elle y est,
 Car dans sa cuisine
-On bat le briquet. »`,
+On bat le briquet. »
+
+Au clair de la lune,
+S'en fut Arlequin
+Frappe chez la brune
+Qui répond soudain :
+« Qui frappe de la sorte ? »
+Il dit à son tour :
+« Ouvrez votre porte
+Pour le Dieu d'amour. »
+
+Au clair de la lune,
+On n'y voit qu'un peu,
+On chercha la plume,
+On chercha du feu.
+En cherchant de la sorte
+Je n'sais c'qu'on trouva,
+Mais je sais qu'la porte
+Sur eux se ferma.`,
   },
   {
     id: 'comptine-3',
@@ -69,13 +112,45 @@ Trempez-la dans l'huile,
 Trempez-la dans l'eau,
 Ça fera un escargot tout chaud.
 
-Je la mets dans mon chapeau,
-Elle me dit : « Il fait trop chaud ! »
-Je la mets dans mon tiroir,
-Elle me dit : « Il fait trop noir ! »
+Une souris verte
+Qui courait dans l'herbe.
+Je la mets dans un tiroir,
+Elle me dit qu'il fait trop noir.
 
+Ces messieurs me disent :
+Trempez-la dans l'huile,
+Trempez-la dans l'eau,
+Ça fera un escargot tout chaud.
+
+Une souris verte
+Qui courait dans l'herbe.
+Je la mets dans mon chapeau,
+Elle me dit qu'il fait trop chaud !
+
+Ces messieurs me disent :
+Trempez-la dans l'huile,
+Trempez-la dans l'eau,
+Ça fera un escargot tout chaud.
+
+Une souris verte
+Qui courait dans l'herbe.
 Je la mets dans ma culotte,
-Elle me fait trois petites crottes.`,
+Elle me fait trois petites crottes.
+
+Ces messieurs me disent :
+Trempez-la dans l'huile,
+Trempez-la dans l'eau,
+Ça fera un escargot tout chaud.
+
+Une souris verte
+Qui courait dans l'herbe.
+Je la mets la dans ma main,
+Elle me dit qu'elle est très bien.
+
+Ces messieurs me disent :
+Trempez-la dans l'huile,
+Trempez-la dans l'eau,
+Ça fera un escargot tout chaud.`,
   },
   {
     id: 'comptine-4',
@@ -98,6 +173,26 @@ Maman est en haut
 Qui fait du gâteau,
 Papa est en bas
 Qui fait du chocolat.
+Fais dodo, Colas mon p'tit frère,
+Fais dodo, t'auras du lolo.
+
+Fais dodo, Colas mon p'tit frère,
+Fais dodo, t'auras du lolo.
+Ta soeur est en haut
+Qui fait des chapeaux,
+Ton frère est en bas
+Qui fait des nougats.
+Fais dodo, Colas mon p'tit frère,
+Fais dodo, t'auras du lolo.
+
+Fais dodo, Colas mon p'tit frère,
+Fais dodo, t'auras du lolo.
+Ton cousin Gaston
+Fais des gros bonbons,
+Ta cousine Charlotte
+Fais de la compote.
+Fais dodo, Colas mon p'tit frère,
+Fais dodo, t'auras du lolo.
 
 Fais dodo, Colas mon p'tit frère,
 Fais dodo, t'auras du lolo.`,
@@ -109,6 +204,8 @@ Fais dodo, t'auras du lolo.`,
     audio: 'assets/audio/comptine-6.mp3',
     lyrics: `Alouette, gentille alouette,
 Alouette, je te plumerai.
+Alouette, gentille alouette,
+Alouette, je te plumerai.
 
 Je te plumerai la tête,
 Je te plumerai la tête,
@@ -118,11 +215,56 @@ O-o-o-oh !
 
 Alouette, gentille alouette,
 Alouette, je te plumerai.
+Alouette, gentille alouette,
+Alouette, je te plumerai.
 
 Je te plumerai le bec,
+Je te plumerai le bec,
+Et le bec ! Et le bec !
+Et la tête ! Et la tête !
+Alouette ! Alouette !
+O-o-o-oh !
+
+Alouette, gentille alouette,
+Alouette, je te plumerai.
+Alouette, gentille alouette,
+Alouette, je te plumerai.
+
+Je te plumerai le cou,
+Je te plumerai le cou,
+Et le cou ! Et le cou !
 Et le bec ! Et la tête !
 Alouette ! Alouette !
-O-o-o-oh !`,
+O-o-o-oh !
+
+Alouette, gentille alouette,
+Alouette, je te plumerai.
+Alouette, gentille alouette,
+Alouette, je te plumerai.
+
+Je te plumerai les ailes,
+Je te plumerai les ailes,
+Et les ailes ! Et les ailes !
+Et le cou ! Et le bec ! Et la tête !
+Alouette !
+O-o-o-oh !
+
+Alouette, gentille alouette,
+Alouette, je te plumerai.
+Alouette, gentille alouette,
+Alouette, je te plumerai.
+
+Je te plumerai la queue,
+Je te plumerai la queue,
+Et la queue ! Et la queue !
+Et les ailes ! Et le cou ! Et le bec ! Et la tête !
+Alouette !
+O-o-o-oh !
+
+Alouette, gentille alouette,
+Alouette, je te plumerai.
+Alouette, gentille alouette,
+Alouette, je te plumerai.`,
   },
   {
     id: 'comptine-7',
@@ -130,24 +272,73 @@ O-o-o-oh !`,
     emoji: '⛵',
     audio: 'assets/audio/comptine-7.mp3',
     lyrics: `Il était un petit navire,
+Il était un petit navire
+Qui n'avait ja-ja-jamais navigué,
 Qui n'avait ja-ja-jamais navigué.
 Ohé ! Ohé !
 
 Il partit pour un long voyage,
+Il partit pour un long voyage
+Sur la mer Mé-Mé-Méditerranée,
 Sur la mer Mé-Mé-Méditerranée.
 Ohé ! Ohé !
 
+Ohé! Ohé! Matelot,
+Matelot navigue sur les flots
+Ohé! Ohé! Matelot,
+Matelot navigue sur les flots
+
 Au bout de cinq à six semaines,
+Au bout de cinq à six semaines,
+Les vivres vin-vin-vinrent à manquer,
 Les vivres vin-vin-vinrent à manquer.
 Ohé ! Ohé !
 
 On tira à la courte paille,
+On tira à la courte paille
+Pour savoir qui-qui-qui serait mangé,
 Pour savoir qui-qui-qui serait mangé.
 Ohé ! Ohé !
 
+Le sort tomba sur le plus jeune,
+Le sort tomba sur le plus jeune,
+C'est donc lui qui-qui-qui sera mangé,
+C'est donc lui qui-qui-qui sera mangé.
+Ohé ! Ohé !
+
+Ohé! Ohé! Matelot,
+Matelot navigue sur les flots
+Ohé! Ohé! Matelot,
+Matelot navigue sur les flots
+
 Au même instant un grand miracle,
+Au même instant un grand miracle
+Pour l'enfant fut-fut-fut réalisé,
 Pour l'enfant fut-fut-fut réalisé.
-Ohé ! Ohé !`,
+Ohé ! Ohé !
+
+Soudain des poissons dans le navire,
+Soudain des poissons dans le navire
+Sautèrent par-par-par et par milliers,
+Sautèrent par-par-par et par milliers.
+Ohé ! Ohé !
+
+On les prit, on les mit à frire,
+On les prit, on les mit à frire,
+Le jeune mousse-mousse-mousse fut sauvé,
+Le jeune mousse-mousse-mousse fut sauvé.
+Ohé ! Ohé !
+
+Si cette histoire vous amuse,
+Si cette histoire vous amuse,
+Nous allons la-la-la recommencer,
+Nous allons la-la-la recommencer,
+Ohé! Ohé!
+
+Ohé! Ohé! Matelot,
+Matelot navigue sur les flots
+Ohé! Ohé! Matelot,
+Matelot navigue sur les flots`,
   },
   {
     id: 'comptine-8',
@@ -159,10 +350,7 @@ Monte à la gouttière.
 Tiens, voilà la pluie,
 Gipsy tombe par terre.
 
-Mais le soleil a chassé la pluie !
-
-L'araignée Gipsy
-Remonte à la gouttière...`,
+Mais le soleil a chassé la pluie !`,
   },
   {
     id: 'comptine-9',
@@ -174,11 +362,37 @@ On y danse, on y danse,
 Sur le pont d'Avignon,
 On y danse tous en rond.
 
-Les messieurs font comme ça,
+Les beaux messieurs font comme ça,
 Et puis encore comme ça.
 
-Les dames font comme ça,
-Et puis encore comme ça.`,
+Sur le pont d'Avignon,
+On y danse, on y danse,
+Sur le pont d'Avignon,
+On y danse tous en rond.
+
+Les belles dames font comme ça,
+Et puis encore comme ça.
+
+Sur le pont d'Avignon,
+On y danse, on y danse,
+Sur le pont d'Avignon,
+On y danse tous en rond.
+
+Les cordonniers font comme ça,
+Et puis encore comme ça.
+
+Sur le pont d'Avignon,
+On y danse, on y danse,
+Sur le pont d'Avignon,
+On y danse tous en rond.
+
+Les blanchisseuses font comme ça,
+Et puis encore comme ça.
+
+Sur le pont d'Avignon,
+On y danse, on y danse,
+Sur le pont d'Avignon,
+On y danse tous en rond.`,
   },
   {
     id: 'comptine-10',
@@ -189,15 +403,29 @@ Et puis encore comme ça.`,
 Dans les cieux, l'astre luit.
 Le mystère annoncé s'accomplit.
 Cet enfant sur la paille endormi,
-C'est le fils de Marie,
-C'est le fils de Dieu.
+C'est l'amour infini,
+C'est l'amour infini.
 
-Douce nuit, sainte nuit !
-Bergers, quittez vos abris !
-Un ange vous guide vers l'humble lieu
-Où Jésus, Roi des rois, Fils de Dieu,
-Ouvre ses yeux sur nous,
-Ouvre ses yeux divins.`,
+Doux enfant, doux agneau.
+Qu'il est saint, qu'il est beau.
+Entendez résonner les pipeaux,
+Des bergers conduisant leurs troupeaux
+Vers son humble berceau,
+Vers son humble berceau.
+
+C'est vers nous qu'il accourt,
+En un don sans retour !
+De ce monde ignorant de l'amour,
+Où commence aujourd'hui son séjour,
+Qu'il soit Roi pour toujours !
+Qu'il soit Roi pour toujours !
+
+Quel accueil pour un Roi !
+Point d'abri, point de toit !
+Dans sa crèche il grelotte de froid
+O pécheur, sans attendre la croix,
+Jésus souffre pour toi !
+Jésus souffre pour toi !`,
   },
   {
     id: 'comptine-11',
@@ -209,10 +437,35 @@ Les petites marionnettes,
 Ainsi font, font, font,
 Trois p'tits tours et puis s'en vont.
 
-Mais elles reviendront,
+Les mains aux côtés,
+Sautez, sautez, marionnettes,
+Les mains aux côtés,
+Marionnettes recommencez.
+
+La taille courbée,
+Tournez, tournez, marionnettes,
+La taille courbée,
+Marionnettes, recommencez.
+
+Ainsi font, font, font,
 Les petites marionnettes,
-Mais elles reviendront,
-Quand les enfants dormiront.`,
+Ainsi font, font, font,
+Trois p'tits tours et puis s'en vont.
+
+Puis le front penché,
+Tournez, tournez, marionnettes,
+Puis le front penché,
+Marionnettes, recommencez.
+
+Et elles danseront,
+Les petites marionnettes,
+Et elles danseront,
+Quand les enfants dormiront.
+
+Ainsi font, font, font,
+Les petites marionnettes,
+Ainsi font, font, font,
+Trois p'tits tours et puis s'en vont.`,
   },
   {
     id: 'comptine-12',
@@ -220,7 +473,7 @@ Quand les enfants dormiront.`,
     emoji: '🐔',
     audio: 'assets/audio/comptine-12.mp3',
     lyrics: `Une poule sur un mur,
-Qui picote du pain dur,
+Qui picore du pain dur,
 Picoti, picota,
 Lève la queue et puis s'en va.`,
   },
@@ -231,13 +484,28 @@ Lève la queue et puis s'en va.`,
     audio: 'assets/audio/comptine-13.mp3',
     lyrics: `Mon beau sapin, roi des forêts,
 Que j'aime ta verdure !
+
 Quand par l'hiver bois et guérets
 Sont dépouillés de leurs attraits,
+
 Mon beau sapin, roi des forêts,
 Tu gardes ta parure.
 
 Toi que Noël planta chez nous
-Au saint anniversaire,
+Au saint anniversaire.
+
+Mon beau sapin, comme il est doux,
+De te voir briller parmi nous.
+Toi que Noël planta chez nous,
+Scintillant de lumière.
+
+Mon beau sapin, tes verts sommets,
+Et leur fidèle ombrage,
+De la foi qui ne ment jamais,
+De la constance et de la paix,
+Mon beau sapin, tes verts sommets
+M'offrent la douce image.
+
 Joli sapin, comme eux toujours
 Tu nous réjouis en ce jour,
 Toi que Noël planta chez nous
@@ -248,15 +516,81 @@ Par les mains de mon père.`,
     title: 'Vive le vent',
     emoji: '❄️',
     audio: 'assets/audio/comptine-14.mp3',
-    lyrics: `Vive le vent, vive le vent,
+    lyrics: `Sur le long chemin,
+Tout blanc de neige blanche,
+Un vieux monsieur s'avance,
+Avec sa canne dans la main.
+Et tout là-haut le vent,
+Qui siffle dans les branches,
+Lui souffle la romance,
+Qu'il chantait petit enfant:
+
+OH! Vive le vent, vive le vent,
 Vive le vent d'hiver
 Qui s'en va sifflant, soufflant
 Dans les grands sapins verts, oh !
 
-Vive le vent, vive le vent,
+Vive le temps, vive le temps
+Vive le temps d'hiver
+Boule de neige et jour de l'an
+Et bonne année grand-mère ...
+
+Joyeux, joyeux Noël,
+Aux mille bougies,
+Quand chantent vers le ciel,
+Les cloches de la nuit.
+Et dans chaque maison,
+Il flotte un air de fêtes,
+Partout la table est prête,
+Et l'on entend la même chanson:
+
+OH! Vive le vent, vive le vent,
 Vive le vent d'hiver
-Bientôt Noël va sonner
-Ding ding dong, ding ding dong !`,
+Qui s'en va sifflant, soufflant
+Dans les grands sapins verts, oh !
+
+Vive le temps, vive le temps
+Vive le temps d'hiver
+Boule de neige et jour de l'an
+Et bonne année grand-mère ...
+
+Et le vieux monsieur
+Descend vers le village,
+C'est l'heure où tout est sage
+Et l'ombre danse au coin du feu
+Mais dans chaque maison,
+Il flotte un air de fêtes,
+Partout la table est prête,
+Et l'on entend la même chanson:
+
+OH! Vive le vent, vive le vent,
+Vive le vent d'hiver
+Qui s'en va sifflant, soufflant
+Dans les grands sapins verts, oh !
+
+Vive le temps, vive le temps
+Vive le temps d'hiver
+Qui rapporte aux vieux enfants
+Leurs souvenirs d'hier.
+
+Sur le long chemin,
+Tout blanc de neige blanche,
+Un vieux monsieur s'avance,
+Avec sa canne dans la main.
+Et tout là-haut le vent,
+Qui siffle dans les branches,
+Lui souffle la romance,
+Qu'il chantait petit enfant:
+
+OH! Vive le vent, vive le vent,
+Vive le vent d'hiver
+Qui s'en va sifflant, soufflant
+Dans les grands sapins verts, oh !
+
+Vive le temps, vive le temps
+Vive le temps d'hiver
+Boule de neige et jour de l'an
+Et bonne année grand-mère ...`,
   },
   {
     id: 'comptine-15',
@@ -266,10 +600,7 @@ Ding ding dong, ding ding dong !`,
     lyrics: `Pomme de reinette et pomme d'api,
 Tapis, tapis rouge.
 Pomme de reinette et pomme d'api,
-Tapis, tapis gris.
-
-Cache ton poing derrière ton dos,
-Ou bien je te donne un coup d'martinet !`,
+Tapis, tapis gris.`,
   },
   {
     id: 'comptine-16',
@@ -281,6 +612,8 @@ Ton moulin, ton moulin va trop vite.
 Meunier tu dors,
 Ton moulin, ton moulin va trop fort.
 
+Ton moulin, ton moulin va trop vite,
+Ton moulin, ton moulin va trop fort.
 Ton moulin, ton moulin va trop vite,
 Ton moulin, ton moulin va trop fort !`,
   },
@@ -303,6 +636,30 @@ Sur la plus haute branche,
 Un rossignol chantait.
 
 Il y a longtemps que je t'aime,
+Jamais je ne t'oublierai.
+
+Chante, rossignol, chante,
+Toi qui as le cœur gai.
+Tu as le cœur à rire,
+Moi je l'ai à pleurer.
+
+Il y a longtemps que je t'aime,
+Jamais je ne t'oublierai.
+
+J'ai perdu mon ami
+Sans l'avoir mérité,
+Pour un bouquet de roses,
+Que je lui refusai.
+
+Il y a longtemps que je t'aime,
+Jamais je ne t'oublierai.
+
+Je voudrais que la rose
+Fût encore au rosier,
+Et que ma douce amie
+Fût encore à m'aimer.
+
+Il y a longtemps que je t'aime,
 Jamais je ne t'oublierai.`,
   },
   {
@@ -315,7 +672,17 @@ Dort, dort, dort le petit fils.
 Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.
 
+Entre les pastoureaux jolis,
+Dort, dort, dort le petit fils.
+Mille anges divins, mille séraphins
+Volent à l'entour de ce grand Dieu d'amour.
+
 Entre les roses et les lys,
+Dort, dort, dort le petit fils.
+Mille anges divins, mille séraphins
+Volent à l'entour de ce grand Dieu d'amour.
+
+Entre les deux bras de Marie
 Dort, dort, dort le petit fils.
 Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.`,
@@ -461,15 +828,38 @@ Et l'écho de nos montagnes
 Redit ce chant mélodieux :
 
 Gloria in excelsis Deo !
+Gloria in excelsis Deo !
 
 Bergers, pour qui cette fête ?
 Quel est l'objet de tous ces chants ?
+Quel vainqueur, quelle conquête
+Mérite ces chœurs triomphants ?
+
+Gloria in excelsis Deo !
+Gloria in excelsis Deo !
 
 Ils annoncent la naissance
-Du libérateur d'Israël,
+Du saint Rédempteur d'Israël,
 Et pleins de reconnaissance
 Chantent en ce jour solennel :
 
+Gloria in excelsis Deo !
+Gloria in excelsis Deo !
+
+Seigneur, par la voix de l'ange,
+Par les hymnes des chérubins,
+La terre sait la louange
+Qui se chante aux parvis divins.
+
+Gloria in excelsis Deo !
+Gloria in excelsis Deo !
+
+Des anges suivant l'exemple,
+Seigneur, Vous viendrez désormais
+Au milieu de Votre temple
+Chanter avec eux Vos bienfaits :
+
+Gloria in excelsis Deo !
 Gloria in excelsis Deo !`,
   },
 ];
