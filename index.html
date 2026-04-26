@@ -32,11 +32,12 @@
 
   <!-- Mini-player (visible quand lecture en cours) -->
   <div class="mini-player" id="miniPlayer" aria-hidden="true">
+    <div class="mini-progress"><div class="mini-progress-fill" id="miniProgressFill"></div></div>
     <button class="mini-info" id="miniInfo" aria-label="Ouvrir les paroles">
       <span class="mini-emoji" id="miniEmoji"></span>
       <div class="mini-text">
         <span class="mini-title" id="miniTitle"></span>
-        <span class="mini-sub">Appuyer pour les paroles</span>
+        <span class="mini-sub" id="miniSub">Appuyer pour les paroles</span>
       </div>
     </button>
     <div class="mini-controls">
@@ -62,7 +63,20 @@
       <h2 class="sheet-title" id="sheetTitle"></h2>
     </div>
     <div class="sheet-lyrics" id="sheetLyrics"></div>
+    <div class="sheet-progress">
+      <div class="sheet-progress-bar" id="sheetProgressBar">
+        <div class="sheet-progress-fill" id="sheetProgressFill"></div>
+        <div class="sheet-progress-thumb" id="sheetProgressThumb"></div>
+      </div>
+      <div class="sheet-time">
+        <span id="sheetTimeCurrent">0:00</span>
+        <span id="sheetTimeTotal">0:00</span>
+      </div>
+    </div>
     <div class="sheet-controls">
+      <button class="ctrl-btn ctrl-btn--small" id="sheetLoop" aria-label="Mode de lecture">
+        <span class="loop-icon" id="sheetLoopIcon">🔂</span>
+      </button>
       <button class="ctrl-btn" id="sheetPrev" aria-label="Précédent">
         <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
       </button>
@@ -73,7 +87,19 @@
       <button class="ctrl-btn" id="sheetNext" aria-label="Suivant">
         <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
       </button>
+      <button class="ctrl-btn ctrl-btn--small" id="sheetTimer" aria-label="Minuteur">
+        <span class="timer-icon" id="sheetTimerIcon">⏰</span>
+        <span class="timer-countdown" id="sheetTimerCountdown" hidden></span>
+      </button>
     </div>
+  </div>
+
+  <!-- Popup timer -->
+  <div class="timer-popup" id="timerPopup" hidden>
+    <button data-min="15">15 min</button>
+    <button data-min="30">30 min</button>
+    <button data-min="60">1 heure</button>
+    <button data-min="0" class="timer-popup-off" id="timerPopupOff" hidden>Désactiver</button>
   </div>
 
 </div>

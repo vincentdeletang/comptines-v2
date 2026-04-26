@@ -904,6 +904,12 @@ const state = {
   editMode: false,
   orderedSongs: getOrderedSongs(),
   wakeLock: null,
+  loopMode: localStorage.getItem('loopMode') || 'one', // 'one' | 'queue' | 'shuffle'
+  sleepTimerEnd: null,   // timestamp ms
+  sleepTimerId: null,    // setTimeout id pour le déclenchement
+  sleepCountdownId: null,// setInterval id pour l'affichage
+  fadeRafId: null,
+  lastDisplayedSongId: null,
 };
 
 const $ = (id) => document.getElementById(id);
@@ -915,17 +921,32 @@ const el = {
   miniInfo:    $('miniInfo'),
   miniEmoji:   $('miniEmoji'),
   miniTitle:   $('miniTitle'),
+  miniSub:     $('miniSub'),
   miniPlay:    $('miniPlay'),
   miniPrev:    $('miniPrev'),
   miniNext:    $('miniNext'),
+  miniProgressFill: $('miniProgressFill'),
   backdrop:    $('sheetBackdrop'),
   sheet:       $('sheet'),
+  sheetHeader: document.querySelector('.sheet-header'),
   sheetEmoji:  $('sheetEmoji'),
   sheetTitle:  $('sheetTitle'),
   sheetLyrics: $('sheetLyrics'),
   sheetPlay:   $('sheetPlay'),
   sheetPrev:   $('sheetPrev'),
   sheetNext:   $('sheetNext'),
+  sheetLoop:   $('sheetLoop'),
+  sheetLoopIcon: $('sheetLoopIcon'),
+  sheetTimer:  $('sheetTimer'),
+  sheetTimerIcon: $('sheetTimerIcon'),
+  sheetTimerCountdown: $('sheetTimerCountdown'),
+  sheetProgressBar: $('sheetProgressBar'),
+  sheetProgressFill: $('sheetProgressFill'),
+  sheetProgressThumb: $('sheetProgressThumb'),
+  sheetTimeCurrent: $('sheetTimeCurrent'),
+  sheetTimeTotal: $('sheetTimeTotal'),
+  timerPopup:  $('timerPopup'),
+  timerPopupOff: $('timerPopupOff'),
   audio:       $('audio'),
 };
 
@@ -940,6 +961,10 @@ function getSong(id) {
 function playSong(id) {
   const song = getSong(id);
   if (!song) return;
+
+  cancelFade();
+  el.audio.volume = 1;
+  el.audio.loop = (state.loopMode === 'one');
 
   const isNewSong = state.currentSongId !== id;
   if (isNewSong) {
@@ -958,11 +983,50 @@ function playSong(id) {
 }
 
 function pause() {
+  fadeOutAndPause(1500);
+}
+
+function pauseImmediate() {
+  cancelFade();
   el.audio.pause();
+  el.audio.volume = 1;
   state.isPlaying = false;
   releaseWakeLock();
   if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
   updatePlayState();
+}
+
+function fadeOutAndPause(duration = 1500) {
+  cancelFade();
+  if (el.audio.paused) { pauseImmediate(); return; }
+
+  state.isPlaying = false;
+  if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+  updatePlayState();
+
+  const startVol = el.audio.volume;
+  const startT = performance.now();
+  const step = (now) => {
+    const t = Math.min(1, (now - startT) / duration);
+    el.audio.volume = startVol * (1 - t);
+    if (t < 1) {
+      state.fadeRafId = requestAnimationFrame(step);
+    } else {
+      el.audio.pause();
+      el.audio.volume = 1;
+      state.fadeRafId = null;
+      releaseWakeLock();
+    }
+  };
+  state.fadeRafId = requestAnimationFrame(step);
+}
+
+function cancelFade() {
+  if (state.fadeRafId != null) {
+    cancelAnimationFrame(state.fadeRafId);
+    state.fadeRafId = null;
+    el.audio.volume = 1;
+  }
 }
 
 function togglePlay() {
@@ -971,6 +1035,7 @@ function togglePlay() {
 }
 
 function next() {
+  if (state.loopMode === 'shuffle') return playRandom();
   const idx = state.orderedSongs.findIndex(s => s.id === state.currentSongId);
   const nextSong = state.orderedSongs[(idx + 1) % state.orderedSongs.length];
   if (nextSong) playSong(nextSong.id);
@@ -983,12 +1048,27 @@ function prev() {
     el.audio.currentTime = startTime;
     return;
   }
+  if (state.loopMode === 'shuffle') return playRandom();
   const idx = state.orderedSongs.findIndex(s => s.id === state.currentSongId);
   const prevSong = state.orderedSongs[(idx - 1 + state.orderedSongs.length) % state.orderedSongs.length];
   if (prevSong) playSong(prevSong.id);
 }
 
-el.audio.loop = true;
+function playRandom() {
+  if (state.orderedSongs.length < 2) return;
+  let pick;
+  do {
+    pick = state.orderedSongs[Math.floor(Math.random() * state.orderedSongs.length)];
+  } while (pick.id === state.currentSongId);
+  playSong(pick.id);
+}
+
+el.audio.loop = (state.loopMode === 'one');
+
+el.audio.addEventListener('ended', () => {
+  if (state.loopMode === 'queue') next();
+  else if (state.loopMode === 'shuffle') playRandom();
+});
 
 /* =========================================================
    Wake Lock
@@ -1015,6 +1095,7 @@ document.addEventListener('visibilitychange', () => {
 function openSheet() {
   const song = getSong(state.currentSongId);
   if (!song) return;
+  applyPalette(el.sheet, song);
   el.sheetEmoji.textContent = song.emoji;
   el.sheetTitle.textContent = song.title;
   el.sheetLyrics.textContent = song.lyrics;
@@ -1023,11 +1104,15 @@ function openSheet() {
   el.backdrop.classList.add('is-open');
   state.sheetOpen = true;
   el.sheetPlay.classList.toggle('is-playing', state.isPlaying);
+  updateProgressUI();
+  updateLoopUI();
+  updateSleepTimerUI();
 }
 
 function closeSheet() {
   el.sheet.classList.remove('is-open');
   el.backdrop.classList.remove('is-open');
+  el.timerPopup.hidden = true;
   state.sheetOpen = false;
 }
 
@@ -1106,15 +1191,48 @@ function renderGrid() {
   }).join('');
 }
 
+function applyPalette(target, song) {
+  const globalIdx = SONGS.indexOf(song);
+  const pal = PALETTES[globalIdx % PALETTES.length];
+  target.style.setProperty('--c-from', pal.from);
+  target.style.setProperty('--c-to', pal.to);
+  target.style.setProperty('--c-accent', pal.accent);
+}
+
+function triggerSwap(elem) {
+  elem.classList.remove('is-swapping');
+  void elem.offsetWidth;
+  elem.classList.add('is-swapping');
+}
+
 function renderMiniPlayer() {
   const hasSong = !!state.currentSongId;
   el.miniPlayer.classList.toggle('is-visible', hasSong);
   el.editBtn.classList.toggle('with-player', hasSong);
   if (!hasSong) return;
   const song = getSong(state.currentSongId);
+
+  const songChanged = state.lastDisplayedSongId !== song.id;
   el.miniEmoji.textContent = song.emoji;
   el.miniTitle.textContent = song.title;
   el.miniPlay.classList.toggle('is-playing', state.isPlaying);
+
+  if (state.sheetOpen) {
+    el.sheetEmoji.textContent = song.emoji;
+    el.sheetTitle.textContent = song.title;
+    if (songChanged) {
+      el.sheetLyrics.textContent = song.lyrics;
+      el.sheetLyrics.scrollTop = 0;
+    }
+  }
+
+  if (songChanged) {
+    applyPalette(el.miniPlayer, song);
+    applyPalette(el.sheet, song);
+    triggerSwap(el.miniInfo);
+    if (state.sheetOpen) triggerSwap(el.sheetHeader);
+    state.lastDisplayedSongId = song.id;
+  }
 }
 
 function render() {
@@ -1131,6 +1249,148 @@ function updatePlayState() {
   renderMiniPlayer();
   if (state.sheetOpen) el.sheetPlay.classList.toggle('is-playing', state.isPlaying);
 }
+
+/* =========================================================
+   Progress
+   ========================================================= */
+
+function formatTime(s) {
+  if (!isFinite(s) || s < 0) s = 0;
+  const m = Math.floor(s / 60);
+  const ss = Math.floor(s % 60).toString().padStart(2, '0');
+  return `${m}:${ss}`;
+}
+
+function updateProgressUI() {
+  const song = getSong(state.currentSongId);
+  if (!song) return;
+  const offset = song.offset || 0;
+  const dur = el.audio.duration;
+  const cur = el.audio.currentTime;
+  const usableDur = isFinite(dur) ? Math.max(0, dur - offset) : 0;
+  const usableCur = Math.max(0, cur - offset);
+  const pct = usableDur > 0 ? (usableCur / usableDur) * 100 : 0;
+  el.miniProgressFill.style.width = pct + '%';
+  if (state.sheetOpen) {
+    el.sheetProgressFill.style.width = pct + '%';
+    el.sheetProgressThumb.style.left = pct + '%';
+    el.sheetTimeCurrent.textContent = formatTime(usableCur);
+    el.sheetTimeTotal.textContent = formatTime(usableDur);
+  }
+}
+
+el.audio.addEventListener('timeupdate', updateProgressUI);
+el.audio.addEventListener('loadedmetadata', updateProgressUI);
+
+/* Seek (sheet) */
+function seekFromEvent(e) {
+  const song = getSong(state.currentSongId);
+  if (!song) return;
+  const rect = el.sheetProgressBar.getBoundingClientRect();
+  const x = (e.touches?.[0]?.clientX ?? e.clientX) - rect.left;
+  const pct = Math.max(0, Math.min(1, x / rect.width));
+  const dur = el.audio.duration;
+  const offset = song.offset || 0;
+  if (!isFinite(dur)) return;
+  const usableDur = Math.max(0, dur - offset);
+  el.audio.currentTime = offset + pct * usableDur;
+  updateProgressUI();
+}
+
+let isSeeking = false;
+el.sheetProgressBar.addEventListener('pointerdown', e => {
+  isSeeking = true;
+  el.sheetProgressBar.setPointerCapture(e.pointerId);
+  seekFromEvent(e);
+});
+el.sheetProgressBar.addEventListener('pointermove', e => { if (isSeeking) seekFromEvent(e); });
+el.sheetProgressBar.addEventListener('pointerup', e => {
+  isSeeking = false;
+  try { el.sheetProgressBar.releasePointerCapture(e.pointerId); } catch {}
+});
+
+/* =========================================================
+   Loop mode
+   ========================================================= */
+
+const LOOP_ICONS = { one: '🔂', queue: '🔁', shuffle: '🔀' };
+const LOOP_LABELS = { one: 'Une chanson', queue: 'Liste', shuffle: 'Aléatoire' };
+
+function updateLoopUI() {
+  el.sheetLoopIcon.textContent = LOOP_ICONS[state.loopMode];
+  el.sheetLoop.setAttribute('aria-label', `Mode: ${LOOP_LABELS[state.loopMode]}`);
+  el.sheetLoop.classList.toggle('is-active', state.loopMode !== 'one');
+}
+
+function cycleLoopMode() {
+  const order = ['one', 'queue', 'shuffle'];
+  const i = order.indexOf(state.loopMode);
+  state.loopMode = order[(i + 1) % order.length];
+  localStorage.setItem('loopMode', state.loopMode);
+  el.audio.loop = (state.loopMode === 'one');
+  updateLoopUI();
+}
+
+el.sheetLoop.addEventListener('click', cycleLoopMode);
+
+/* =========================================================
+   Sleep timer
+   ========================================================= */
+
+function setSleepTimer(minutes) {
+  clearSleepTimer();
+  if (!minutes) {
+    updateSleepTimerUI();
+    return;
+  }
+  state.sleepTimerEnd = Date.now() + minutes * 60_000;
+  state.sleepTimerId = setTimeout(() => {
+    fadeOutAndPause(3000);
+    clearSleepTimer();
+  }, minutes * 60_000);
+  state.sleepCountdownId = setInterval(updateSleepTimerUI, 30_000);
+  updateSleepTimerUI();
+}
+
+function clearSleepTimer() {
+  if (state.sleepTimerId) clearTimeout(state.sleepTimerId);
+  if (state.sleepCountdownId) clearInterval(state.sleepCountdownId);
+  state.sleepTimerId = null;
+  state.sleepCountdownId = null;
+  state.sleepTimerEnd = null;
+}
+
+function updateSleepTimerUI() {
+  const active = !!state.sleepTimerEnd;
+  el.sheetTimer.classList.toggle('is-active', active);
+  el.sheetTimer.classList.toggle('has-countdown', active);
+  el.sheetTimerCountdown.hidden = !active;
+  el.timerPopupOff.hidden = !active;
+  if (active) {
+    const remaining = Math.max(0, state.sleepTimerEnd - Date.now());
+    const minLeft = Math.ceil(remaining / 60_000);
+    el.sheetTimerCountdown.textContent = minLeft + 'm';
+  }
+}
+
+el.sheetTimer.addEventListener('click', e => {
+  e.stopPropagation();
+  el.timerPopup.hidden = !el.timerPopup.hidden;
+});
+
+el.timerPopup.addEventListener('click', e => {
+  const btn = e.target.closest('button[data-min]');
+  if (!btn) return;
+  const min = parseInt(btn.dataset.min, 10);
+  setSleepTimer(min);
+  el.timerPopup.hidden = true;
+});
+
+document.addEventListener('click', e => {
+  if (el.timerPopup.hidden) return;
+  if (e.target.closest('#timerPopup') || e.target.closest('#sheetTimer')) return;
+  el.timerPopup.hidden = true;
+});
 
 /* =========================================================
    Events
@@ -1152,8 +1412,8 @@ el.miniNext.addEventListener('click', next);
 
 el.backdrop.addEventListener('click', closeSheet);
 el.sheetPlay.addEventListener('click', () => { togglePlay(); el.sheetPlay.classList.toggle('is-playing', state.isPlaying); });
-el.sheetPrev.addEventListener('click', () => { prev(); setTimeout(() => { const s = getSong(state.currentSongId); if (s && state.sheetOpen) { el.sheetEmoji.textContent = s.emoji; el.sheetTitle.textContent = s.title; el.sheetLyrics.textContent = s.lyrics; el.sheetLyrics.scrollTop = 0; } }, 50); });
-el.sheetNext.addEventListener('click', () => { next(); setTimeout(() => { const s = getSong(state.currentSongId); if (s && state.sheetOpen) { el.sheetEmoji.textContent = s.emoji; el.sheetTitle.textContent = s.title; el.sheetLyrics.textContent = s.lyrics; el.sheetLyrics.scrollTop = 0; } }, 50); });
+el.sheetPrev.addEventListener('click', prev);
+el.sheetNext.addEventListener('click', next);
 
 el.audio.addEventListener('pause', () => { if (state.sheetOpen) el.sheetPlay.classList.remove('is-playing'); });
 
@@ -1235,3 +1495,5 @@ localStorage.removeItem('fav');
 localStorage.removeItem('tab');
 
 render();
+updateLoopUI();
+updateSleepTimerUI();

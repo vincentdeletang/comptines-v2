@@ -235,6 +235,9 @@ svg { display: block; fill: currentColor; }
    ========================================================= */
 
 .mini-player {
+  --c-from: #FFFFFF;
+  --c-to: #FFFFFF;
+  --c-accent: var(--primary);
   position: fixed;
   bottom: 0; left: 0; right: 0;
   z-index: 30;
@@ -244,10 +247,25 @@ svg { display: block; fill: currentColor; }
   padding-bottom: var(--safe-bottom);
   padding-left: 16px;
   padding-right: 12px;
-  background: var(--white);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c-from) 35%, white) 0%, var(--white) 70%);
   box-shadow: 0 -1px 0 rgba(0,0,0,.06), var(--shadow-lg);
   transform: translateY(100%);
-  transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms ease;
+}
+
+.mini-progress {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+.mini-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--c-accent);
+  transition: width 200ms linear, background 320ms ease;
 }
 
 .mini-player.is-visible { transform: translateY(0); }
@@ -305,14 +323,33 @@ svg { display: block; fill: currentColor; }
 
 .mini-btn--play {
   width: 52px; height: 52px;
-  background: var(--primary);
+  background: var(--c-accent);
   color: #fff;
   border-radius: 50%;
   margin-left: 4px;
+  transition: background 320ms ease, filter 150ms;
 }
 
-.mini-btn--play:active { background: var(--primary-dark); }
+.mini-btn--play:active { filter: brightness(.85); }
 .mini-btn--play svg { width: 24px; height: 24px; }
+
+/* Slide swap */
+@keyframes mini-swap {
+  0%   { opacity: 0; transform: translateX(22px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+@keyframes mini-swap-reverse {
+  0%   { opacity: 0; transform: translateX(-22px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.mini-info.is-swapping,
+.sheet-header.is-swapping {
+  animation: mini-swap 320ms cubic-bezier(.32,.72,0,1) both;
+}
+.mini-info.is-swapping-rev,
+.sheet-header.is-swapping-rev {
+  animation: mini-swap-reverse 320ms cubic-bezier(.32,.72,0,1) both;
+}
 
 /* play/pause toggle */
 .mini-btn .i-pause, .ctrl-btn .i-pause { display: none; }
@@ -340,6 +377,9 @@ svg { display: block; fill: currentColor; }
    ========================================================= */
 
 .sheet {
+  --c-from: #FFFFFF;
+  --c-to: #FFFFFF;
+  --c-accent: var(--primary);
   position: fixed;
   bottom: 0; left: 0; right: 0;
   z-index: 50;
@@ -399,9 +439,9 @@ svg { display: block; fill: currentColor; }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 16px 20px;
-  padding-bottom: calc(16px + var(--safe-bottom));
+  gap: 10px;
+  padding: 14px 20px;
+  padding-bottom: calc(14px + var(--safe-bottom));
   border-top: 1px solid #F4F4F5;
 }
 
@@ -412,7 +452,9 @@ svg { display: block; fill: currentColor; }
   justify-content: center;
   border-radius: 50%;
   color: var(--text-muted);
-  transition: background 150ms;
+  transition: background 150ms, color 150ms;
+  position: relative;
+  flex-shrink: 0;
 }
 
 .ctrl-btn svg { width: 28px; height: 28px; }
@@ -420,12 +462,122 @@ svg { display: block; fill: currentColor; }
 
 .ctrl-btn--play {
   width: 72px; height: 72px;
-  background: var(--primary);
+  background: var(--c-accent);
   color: #fff;
+  transition: background 320ms ease, filter 150ms;
 }
 
-.ctrl-btn--play:active { background: var(--primary-dark); }
+.ctrl-btn--play:active { filter: brightness(.85); background: var(--c-accent); }
 .ctrl-btn--play svg { width: 36px; height: 36px; }
+
+.ctrl-btn--small {
+  width: 44px; height: 44px;
+  font-size: 1.4rem;
+}
+
+.ctrl-btn--small.is-active {
+  color: var(--c-accent);
+}
+
+.ctrl-btn--small.has-countdown .timer-icon { display: none; }
+.timer-countdown {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--c-accent);
+}
+
+/* =========================================================
+   Sheet progress
+   ========================================================= */
+
+.sheet-progress {
+  flex-shrink: 0;
+  padding: 10px 20px 4px;
+}
+
+.sheet-progress-bar {
+  position: relative;
+  height: 6px;
+  background: #F4F4F5;
+  border-radius: 3px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.sheet-progress-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 0%;
+  background: var(--c-accent);
+  border-radius: 3px;
+  transition: background 320ms ease;
+}
+
+.sheet-progress-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 14px; height: 14px;
+  background: var(--c-accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  transition: background 320ms ease;
+}
+
+.sheet-time {
+  display: flex;
+  justify-content: space-between;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   Timer popup
+   ========================================================= */
+
+.timer-popup {
+  position: fixed;
+  bottom: calc(96px + var(--safe-bottom));
+  right: 16px;
+  z-index: 60;
+  background: white;
+  border-radius: 16px;
+  padding: 6px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  animation: timer-popup-in 220ms cubic-bezier(.32,.72,0,1) both;
+}
+
+@keyframes timer-popup-in {
+  from { opacity: 0; transform: translateY(8px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.timer-popup button {
+  padding: 12px 16px;
+  text-align: left;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: .9375rem;
+  color: var(--text);
+  transition: background 150ms;
+}
+
+.timer-popup button:active { background: #F4F4F5; }
+
+.timer-popup-off {
+  color: #DC2626 !important;
+  border-top: 1px solid #F4F4F5;
+  margin-top: 4px;
+  padding-top: 12px !important;
+  border-radius: 0 0 10px 10px !important;
+}
 
 /* =========================================================
    Animation grille
