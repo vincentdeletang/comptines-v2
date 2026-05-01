@@ -904,12 +904,14 @@ const state = {
   editMode: false,
   orderedSongs: getOrderedSongs(),
   wakeLock: null,
-  loopMode: localStorage.getItem('loopMode') || 'one', // 'one' | 'queue' | 'shuffle'
+  loopMode: localStorage.getItem('loopMode') === 'shuffle' ? 'shuffle' : 'one', // 'one' | 'shuffle'
   sleepTimerEnd: null,   // timestamp ms
   sleepTimerId: null,    // setTimeout id pour le déclenchement
   sleepCountdownId: null,// setInterval id pour l'affichage
   fadeRafId: null,
   lastDisplayedSongId: null,
+  pendingReload: false,  // un nouveau SW a pris le contrôle, on reload dès qu'on n'écoute plus
+  loading: false,        // changement de src en cours — ignorer le 'pause' implicite qui en découle
 };
 
 const $ = (id) => document.getElementById(id);
@@ -968,25 +970,23 @@ function playSong(id) {
 
   const isNewSong = state.currentSongId !== id;
   if (isNewSong) {
+    state.loading = true;
     el.audio.src = song.audio;
     el.audio.currentTime = song.offset || 0;
     state.currentSongId = id;
   }
 
   el.audio.play().then(() => {
+    state.loading = false;
     state.isPlaying = true;
     updatePlayState();
     if (isNewSong) updateMediaSession(song);
     if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
     acquireWakeLock();
-  }).catch(() => {});
+  }).catch(() => { state.loading = false; });
 }
 
 function pause() {
-  fadeOutAndPause(1500);
-}
-
-function pauseImmediate() {
   cancelFade();
   el.audio.pause();
   el.audio.volume = 1;
@@ -998,7 +998,7 @@ function pauseImmediate() {
 
 function fadeOutAndPause(duration = 1500) {
   cancelFade();
-  if (el.audio.paused) { pauseImmediate(); return; }
+  if (el.audio.paused) { pause(); return; }
 
   state.isPlaying = false;
   if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
@@ -1066,9 +1066,23 @@ function playRandom() {
 el.audio.loop = (state.loopMode === 'one');
 
 el.audio.addEventListener('ended', () => {
-  if (state.loopMode === 'queue') next();
-  else if (state.loopMode === 'shuffle') playRandom();
+  if (state.loopMode === 'shuffle') playRandom();
 });
+
+/* Si un MP3 est corrompu/absent, on saute à la suivante. Au-delà de 3 erreurs
+   d'affilée on s'arrête pour ne pas boucler à l'infini sur un catalogue cassé. */
+let audioErrorCount = 0;
+el.audio.addEventListener('error', () => {
+  console.warn('Audio error', el.audio.error);
+  audioErrorCount++;
+  if (audioErrorCount >= 3) {
+    audioErrorCount = 0;
+    pause();
+    return;
+  }
+  setTimeout(next, 300);
+});
+el.audio.addEventListener('playing', () => { audioErrorCount = 0; });
 
 /* =========================================================
    Wake Lock
@@ -1116,9 +1130,20 @@ function closeSheet() {
   state.sheetOpen = false;
 }
 
-let sheetTouchStartY = 0;
-el.sheet.addEventListener('touchstart', e => { sheetTouchStartY = e.touches[0].clientY; }, { passive: true });
-el.sheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - sheetTouchStartY > 60) closeSheet(); }, { passive: true });
+let sheetTouchStartY = null;
+el.sheet.addEventListener('touchstart', e => {
+  /* On ne déclenche le swipe-to-close que si le geste démarre sur la poignée ou le header,
+     sinon swiper dans les paroles (rubber-band, etc.) fermerait la sheet par accident. */
+  const t = e.target;
+  sheetTouchStartY = (t.closest('.sheet-handle') || t.closest('.sheet-header'))
+    ? e.touches[0].clientY
+    : null;
+}, { passive: true });
+el.sheet.addEventListener('touchend', e => {
+  if (sheetTouchStartY == null) return;
+  if (e.changedTouches[0].clientY - sheetTouchStartY > 60) closeSheet();
+  sheetTouchStartY = null;
+}, { passive: true });
 
 /* =========================================================
    Mode édition + drag & drop
@@ -1313,8 +1338,8 @@ el.sheetProgressBar.addEventListener('pointerup', e => {
    Loop mode
    ========================================================= */
 
-const LOOP_ICONS = { one: '🔂', queue: '🔁', shuffle: '🔀' };
-const LOOP_LABELS = { one: 'Une chanson', queue: 'Liste', shuffle: 'Aléatoire' };
+const LOOP_ICONS = { one: '🔁', shuffle: '🔀' };
+const LOOP_LABELS = { one: 'Une chanson', shuffle: 'Aléatoire' };
 
 function updateLoopUI() {
   el.sheetLoopIcon.textContent = LOOP_ICONS[state.loopMode];
@@ -1323,7 +1348,7 @@ function updateLoopUI() {
 }
 
 function cycleLoopMode() {
-  const order = ['one', 'queue', 'shuffle'];
+  const order = ['one', 'shuffle'];
   const i = order.indexOf(state.loopMode);
   state.loopMode = order[(i + 1) % order.length];
   localStorage.setItem('loopMode', state.loopMode);
@@ -1415,7 +1440,22 @@ el.sheetPlay.addEventListener('click', () => { togglePlay(); el.sheetPlay.classL
 el.sheetPrev.addEventListener('click', prev);
 el.sheetNext.addEventListener('click', next);
 
-el.audio.addEventListener('pause', () => { if (state.sheetOpen) el.sheetPlay.classList.remove('is-playing'); });
+/* Sync de l'état avec l'audio réel (interruption système : appel, casque débranché, focus média volé) */
+el.audio.addEventListener('play', () => {
+  state.isPlaying = true;
+  if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+  acquireWakeLock();
+  updatePlayState();
+});
+el.audio.addEventListener('pause', () => {
+  if (el.audio.ended) return; // transition entre pistes en mode shuffle, pas une vraie pause
+  if (state.loading) return;  // 'pause' implicite déclenché par un changement de src
+  state.isPlaying = false;
+  if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+  releaseWakeLock();
+  updatePlayState();
+  if (state.pendingReload) location.reload();
+});
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && state.sheetOpen) closeSheet();
@@ -1469,6 +1509,36 @@ function updateMediaSession(song) {
   });
 }
 
+/* Position state pour la barre de progression du lockscreen.
+   On expose la timeline "utile" (offset retiré) pour que ça matche la barre in-app. */
+function updateMediaPositionState() {
+  if (!('mediaSession' in navigator) || typeof navigator.mediaSession.setPositionState !== 'function') return;
+  const song = getSong(state.currentSongId);
+  if (!song) return;
+  const dur = el.audio.duration;
+  if (!isFinite(dur) || dur <= 0) return;
+  const offset = song.offset || 0;
+  const usableDur = Math.max(0, dur - offset);
+  const usableCur = Math.max(0, Math.min(usableDur, el.audio.currentTime - offset));
+  try {
+    navigator.mediaSession.setPositionState({
+      duration: usableDur,
+      position: usableCur,
+      playbackRate: el.audio.playbackRate || 1,
+    });
+  } catch {}
+}
+
+let lastPositionUpdate = 0;
+el.audio.addEventListener('timeupdate', () => {
+  const now = performance.now();
+  if (now - lastPositionUpdate > 1000) {
+    lastPositionUpdate = now;
+    updateMediaPositionState();
+  }
+});
+el.audio.addEventListener('loadedmetadata', updateMediaPositionState);
+
 if ('mediaSession' in navigator) {
   navigator.mediaSession.setActionHandler('play', () => {
     if (state.currentSongId) playSong(state.currentSongId);
@@ -1476,6 +1546,17 @@ if ('mediaSession' in navigator) {
   navigator.mediaSession.setActionHandler('pause', pause);
   navigator.mediaSession.setActionHandler('previoustrack', prev);
   navigator.mediaSession.setActionHandler('nexttrack', next);
+  try {
+    navigator.mediaSession.setActionHandler('seekto', (details) => {
+      const song = getSong(state.currentSongId);
+      if (!song) return;
+      const offset = song.offset || 0;
+      const target = offset + (details.seekTime || 0);
+      if (details.fastSeek && typeof el.audio.fastSeek === 'function') el.audio.fastSeek(target);
+      else el.audio.currentTime = target;
+      updateMediaPositionState();
+    });
+  } catch {}
 }
 
 /* =========================================================
@@ -1484,6 +1565,15 @@ if ('mediaSession' in navigator) {
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+
+  /* Reload auto quand un nouveau SW prend le contrôle (mais pas au tout premier install,
+     et pas en plein milieu d'une lecture — on diffère jusqu'à la prochaine pause). */
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController || state.pendingReload) return;
+    state.pendingReload = true;
+    if (!state.isPlaying) location.reload();
+  });
 }
 
 /* =========================================================
