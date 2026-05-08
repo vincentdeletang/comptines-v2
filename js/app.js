@@ -688,6 +688,124 @@ Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.`,
   },
   {
+    id: 'comptine-39',
+    title: 'La chanson des légumes',
+    emoji: '🥕',
+    audio: 'assets/audio/comptine-39.mp3',
+    offset: 3,
+    endOffset: 2,
+    lyrics: `Bonjour les enfants ! Chantons ensemble la chanson de nos légumes préférés ! Vous êtes prêts ?
+
+Une petite carotte, carotte, carotte,
+Une petite carotte à croquer.
+Une petite tomate, tomate, tomate,
+Une petite tomate à déguster.
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Une petite courgette, courgette, courgette,
+Une petite courgette à mariner.
+Une petite aubergine, aubergine, aubergine,
+Une petite aubergine à griller.
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Une petite pomme de terre, pomme de terre, pomme de terre,
+Une petite pomme de terre à écraser.
+Un petit brocoli, brocoli, brocoli,
+Un petit brocoli à croquer.
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Un petit poivron, poivron, poivron,
+Un petit poivron à griller.
+Une petite betterave, betterave, betterave,
+Une petite betterave à déguster.
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Des petits pois, petits pois, petits pois,
+Des petits pois à manger.
+Un petit concombre, concombre, concombre,
+Un petit concombre à croquer.
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Une petite salade, salade, salade,
+Une petite salade à déguster.
+Une petite asperge, asperge, asperge,
+Une petite asperge à goûter.
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Un petit chou-fleur, chou-fleur, chou-fleur,
+Un petit chou-fleur à griller.
+Un petit radis, radis, radis,
+Un petit radis à croquer.
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Un petit potiron, potiron, potiron,
+Un petit potiron en soupe à siroter.
+Un petit artichaut, artichaut, artichaut,
+Un petit artichaut à griller.
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Un petit oignon, oignon, oignon,
+Un petit oignon à griller.
+Un petit céleri, céleri, céleri,
+Un petit céleri à goûter.
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Encore !
+
+Goûte, goûte et croque, les couleurs s'illuminent,
+Goûte, goûte et croque, c'est la fête des vitamines !
+
+Merci les légumes, les légumes, les légumes,
+Merci les légumes, je suis rassasié !`,
+  },
+  {
+    id: 'comptine-38',
+    title: 'Les petits flocons',
+    emoji: '❄️',
+    audio: 'assets/audio/comptine-38.mp3',
+    offset: 3,
+    endOffset: 2,
+    lyrics: `Les petits flocons tombent tout doucement,
+Un sur ma tête, un sur mon gant.
+Les petits flocons dansent dans le vent,
+Tourbillon, tourbillon, puis tombent lentement.
+
+Sur mon nez, sur mes joues,
+Oh, comme ils sont doux !
+
+Les petits flocons tombent tout doucement,
+Couvrent la terre d'un beau tapis blanc.
+
+Les petits flocons tombent tout doucement,
+Un sur ma tête, un sur mon gant.
+Les petits flocons dansent dans le vent,
+Tourbillon, tourbillon, puis tombent lentement.
+
+Sur mon nez, sur mes joues,
+Oh, comme ils sont doux !
+
+Les petits flocons tombent tout doucement,
+Couvrent la terre d'un beau tapis blanc.`,
+  },
+  {
     id: 'comptine-37',
     title: "C'est en haut, c'est en bas",
     emoji: '🤸',

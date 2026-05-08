@@ -1,4 +1,4 @@
-const CACHE = 'comptines-20260508-haut-bas';
+const CACHE = 'comptines-20260508-flocons-legumes';
 
 const PRECACHE = [
   '/',
@@ -44,6 +44,8 @@ const PRECACHE = [
   '/assets/audio/comptine-35.mp3',
   '/assets/audio/comptine-36.mp3',
   '/assets/audio/comptine-37.mp3',
+  '/assets/audio/comptine-38.mp3',
+  '/assets/audio/comptine-39.mp3',
 ];
 
 self.addEventListener('install', (e) => {
