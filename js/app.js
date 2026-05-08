@@ -688,6 +688,394 @@ Mille anges divins, mille séraphins
 Volent à l'entour de ce grand Dieu d'amour.`,
   },
   {
+    id: 'comptine-37',
+    title: "C'est en haut, c'est en bas",
+    emoji: '🤸',
+    audio: 'assets/audio/comptine-37.mp3',
+    offset: 3,
+    endOffset: 2,
+    lyrics: `C'est en haut et c'est en bas,
+C'est de travers et ça c'est droit.
+C'est tout sombre, c'est lumineux,
+C'est très lent, c'est vigoureux.
+
+Voici les cheveux, voilà la peau,
+Voici les oreilles, voilà les yeux.
+
+C'est immense, c'est tout petit,
+C'est un bras, c'est mon petit doigt.
+C'est tout triste, c'est joyeux,
+C'est mon ventre, ce sont mes yeux.
+
+C'est tout près et c'est très loin,
+Cette chanson, je l'aime bien.
+C'est dessus et en dessous,
+C'est fatigué, c'est animé.
+
+On inspire, on expire,
+Et la chanson va finir.
+
+Bravo, bravo les enfants !`,
+  },
+  {
+    id: 'comptine-36',
+    title: 'Un, deux, trois, nous irons au bois',
+    emoji: '🍒',
+    audio: 'assets/audio/comptine-36.mp3',
+    offset: 3,
+    endOffset: 2,
+    lyrics: `Un, deux, trois,
+Nous irons au bois.
+Quatre, cinq, six,
+Cueillir des cerises.
+Sept, huit, neuf,
+Dans mon panier neuf.
+Dix, onze, douze,
+Elles seront toutes rouges.
+
+Encore une fois !
+
+Un, deux, trois,
+Nous irons au bois.
+Quatre, cinq, six,
+Cueillir des cerises.
+Sept, huit, neuf,
+Dans mon panier neuf.
+Dix, onze, douze,
+Elles seront toutes rouges.
+
+Un, deux, trois, quatre,
+Cinq, six, sept, huit,
+Neuf, dix, onze, douze !
+
+Et on chante encore une fois !
+
+Un, deux, trois,
+Nous irons au bois.
+Quatre, cinq, six,
+Cueillir des cerises.
+Sept, huit, neuf,
+Dans mon panier neuf.
+Dix, onze, douze,
+Elles seront toutes rouges.`,
+  },
+  {
+    id: 'comptine-35',
+    title: "Bateau sur l'eau",
+    emoji: '🚣',
+    audio: 'assets/audio/comptine-35.mp3',
+    offset: 1,
+    endOffset: 5,
+    lyrics: `Bateau sur l'eau,
+La rivière, la rivière,
+Bateau sur l'eau,
+La rivière au bord de l'eau.
+
+Bateau sur l'eau,
+La rivière, la rivière,
+Bateau sur l'eau,
+Plouf ! dans l'eau !
+
+Bateau sur l'eau,
+La rivière, la rivière,
+Bateau sur l'eau,
+La rivière au bord de l'eau.
+
+Bateau sur l'eau,
+La rivière, la rivière,
+Bateau sur l'eau,
+Plouf ! dans l'eau !`,
+  },
+  {
+    id: 'comptine-34',
+    title: 'La chanson du printemps',
+    emoji: '🌸',
+    audio: 'assets/audio/comptine-34.mp3',
+    offset: 3,
+    endOffset: 2,
+    lyrics: `Le printemps est arrivé,
+Comme un papillon léger.
+Il a décoré les fleurs
+De ravissantes couleurs.
+
+C'est la chanson du printemps,
+Passe, passera le temps.
+C'est la chanson du printemps,
+J'ai le cœur content.
+
+C'est la chanson du printemps,
+Passe, passera le temps.
+C'est la chanson du printemps,
+J'ai le cœur content.
+
+Le printemps est arrivé,
+Comme un papillon léger.
+Il a décoré les fleurs
+De ravissantes couleurs.
+
+C'est la chanson du printemps,
+Passe, passera le temps.
+C'est la chanson du printemps,
+J'ai le cœur content.`,
+  },
+  {
+    id: 'comptine-33',
+    title: 'La famille tortue',
+    emoji: '🐢',
+    audio: 'assets/audio/comptine-33.mp3',
+    offset: 3,
+    endOffset: 2,
+    lyrics: `Jamais on n'a vu,
+Jamais on ne verra,
+La famille tortue
+Courir après les rats.
+
+Le papa tortue
+Et la maman tortue,
+Et les enfants tortue
+Iront toujours au pas.
+
+Jamais on n'a vu,
+Jamais on ne verra,
+La famille tortue
+Courir après les rats.
+
+Le papa tortue
+Et la maman tortue,
+Et les enfants tortue
+Iront toujours au pas.`,
+  },
+  {
+    id: 'comptine-32',
+    title: 'Dans la ferme à Mathurin',
+    emoji: '🐄',
+    audio: 'assets/audio/comptine-32.mp3',
+    offset: 0,
+    endOffset: 16,
+    lyrics: `Dans la ferme à Mathurin,
+Y'a des centaines de poulets.
+Y'a des cot par ci, y'a des cot par là,
+Y'a des cot, cot, cot, cot, cot, cot !
+Dans la ferme à Mathurin, chante son refrain.
+
+Dans la ferme à Mathurin,
+Y'a des centaines de chiens.
+Y'a des wouf par ci, y'a des wouf par là,
+Y'a des wouf, wouf, wouf, wouf, wouf, wouf !
+Dans la ferme à Mathurin, chante son refrain.
+
+Dans la ferme à Mathurin,
+Y'a des centaines de cochons.
+Y'a des groin par ci, y'a des groin par là,
+Y'a des groin, groin, groin, groin, groin, groin !
+Dans la ferme à Mathurin, chante son refrain.
+
+Dans la ferme à Mathurin,
+Y'a des centaines de chevaux.
+Y'a des hi par ci, y'a des hi par là,
+Y'a des hi, hi, hi, hi, hi, hi !
+Dans la ferme à Mathurin, chante son refrain.
+
+Dans la ferme à Mathurin,
+Y'a des centaines de vaches.
+Y'a des meuh par ci, y'a des meuh par là,
+Y'a des meuh, meuh, meuh, meuh, meuh, meuh !
+Dans la ferme à Mathurin, chante son refrain.
+
+Dans la ferme à Mathurin,
+Y'a des centaines de canards.
+Y'a des coin par ci, y'a des coin par là,
+Y'a des coin, coin, coin, coin, coin, coin !
+Dans la ferme à Mathurin, chante son refrain.`,
+  },
+  {
+    id: 'comptine-31',
+    title: 'Pirouette, cacahuète',
+    emoji: '🥜',
+    audio: 'assets/audio/comptine-31.mp3',
+    offset: 0,
+    endOffset: 2,
+    lyrics: `Il était un petit homme,
+Pirouette, cacahuète,
+Il était un petit homme,
+Qui avait une drôle de maison.
+
+La maison est en carton,
+Pirouette, cacahuète,
+La maison est en carton,
+Les escaliers sont en papier.
+
+Si vous voulez y monter,
+Pirouette, cacahuète,
+Si vous voulez y monter,
+Vous vous casserez le bout du nez.
+
+Le facteur y est monté,
+Pirouette, cacahuète,
+Le facteur y est monté,
+Il s'est cassé le bout du nez.
+
+On lui a raccommodé,
+Pirouette, cacahuète,
+On lui a raccommodé,
+Avec du joli fil doré.
+
+Mon histoire est terminée,
+Pirouette, cacahuète,
+Mon histoire est terminée,
+Messieurs, mesdames, applaudissez !`,
+  },
+  {
+    id: 'comptine-30',
+    title: 'Dans sa maison un grand cerf',
+    emoji: '🦌',
+    audio: 'assets/audio/comptine-30.mp3',
+    offset: 0,
+    endOffset: 2,
+    lyrics: `Dans sa maison un grand cerf
+Regardait par la fenêtre,
+Un lapin venir à lui
+Et frapper ainsi.
+
+— Cerf, cerf, ouvre-moi !
+Ou le chasseur me tuera.
+— Lapin, lapin, entre et viens
+Me serrer la main.`,
+  },
+  {
+    id: 'comptine-29',
+    title: 'Mon petit lapin',
+    emoji: '🐰',
+    audio: 'assets/audio/comptine-29.mp3',
+    offset: 1,
+    endOffset: 4,
+    lyrics: `Mon petit lapin a bien du chagrin,
+Il ne saute plus dans son petit jardin.
+Mon petit lapin a bien du chagrin,
+Il ne saute plus dans son petit jardin.
+
+Saute, saute, saute mon petit lapin,
+Danse, danse, danse dans ton petit jardin.
+Saute, saute, saute mon petit lapin,
+Et dépêche-toi d'embrasser quelqu'un.
+
+Mon petit lapin a bien du chagrin,
+Il ne saute plus dans son petit jardin.
+Mon petit lapin a bien du chagrin,
+Il ne saute plus dans son petit jardin.
+
+Saute, saute, saute mon petit lapin,
+Danse, danse, danse dans ton petit jardin.
+Saute, saute, saute mon petit lapin,
+Et dépêche-toi d'embrasser quelqu'un.`,
+  },
+  {
+    id: 'comptine-28',
+    title: 'Ah ! Les crocodiles',
+    emoji: '🐊',
+    audio: 'assets/audio/comptine-28.mp3',
+    offset: 0,
+    endOffset: 2,
+    lyrics: `Un crocodile, s'en allant à la guerre,
+Disait adieu à ses petits enfants.
+Traînant la queue, la queue dans la poussière,
+Il s'en allait combattre les éléphants.
+
+Ah ! Les crocrocro, les crocrocro, les crocodiles,
+Sur les bords du Nil, ils sont partis, n'en parlons plus.
+Ah ! Les crocrocro, les crocrocro, les crocodiles,
+Sur les bords du Nil, ils sont partis, n'en parlons plus.
+
+Il fredonnait une marche militaire,
+Dont il mâchait les mots à grosses dents.
+Quand il ouvrait la gueule tout entière,
+On croyait voir ses ennemis dedans.
+
+Ah ! Les crocrocro, les crocrocro, les crocodiles,
+Sur les bords du Nil, ils sont partis, n'en parlons plus.
+Ah ! Les crocrocro, les crocrocro, les crocodiles,
+Sur les bords du Nil, ils sont partis, n'en parlons plus.
+
+Un éléphant parut, et sur la terre
+Se prépara à ce combat de géants.
+Mais près de là coulait une rivière :
+Le crocodile s'y jeta subitement.
+
+Ah ! Les crocrocro, les crocrocro, les crocodiles,
+Sur les bords du Nil, ils sont partis, n'en parlons plus.
+Ah ! Les crocrocro, les crocrocro, les crocodiles,
+Sur les bords du Nil, ils sont partis, n'en parlons plus.`,
+  },
+  {
+    id: 'comptine-27',
+    title: 'Un éléphant qui se balançait',
+    emoji: '🐘',
+    audio: 'assets/audio/comptine-27.mp3',
+    offset: 3,
+    endOffset: 27,
+    lyrics: `Un éléphant qui se balançait
+Sur une toile, toile, toile, toile d'araignée,
+Il trouvait ce jeu tellement amusant
+Que bientôt vint un deuxième éléphant.
+
+Deux éléphants qui se balançaient
+Sur une toile, toile, toile, toile d'araignée,
+Ils trouvaient ce jeu tellement amusant
+Que bientôt vint un troisième éléphant.
+
+Trois éléphants qui se balançaient
+Sur une toile, toile, toile, toile d'araignée,
+Ils trouvaient ce jeu tellement amusant
+Que bientôt vint un quatrième éléphant.
+
+Quatre éléphants qui se balançaient
+Sur une toile, toile, toile, toile d'araignée,
+Ils trouvaient ce jeu tellement amusant
+Que bientôt vint un cinquième éléphant.
+
+Cinq éléphants qui se balançaient
+Sur une toile, toile, toile, toile d'araignée,
+Ils trouvaient ce jeu tellement amusant
+Que bientôt vint un sixième éléphant.
+
+Six éléphants qui se balançaient
+Sur une toile, toile, toile, toile d'araignée,
+Ils trouvaient ce jeu tellement amusant
+Que tout d'un coup… la toile a cassé !`,
+  },
+  {
+    id: 'comptine-26',
+    title: "La fourmi m'a piqué la main",
+    emoji: '🐜',
+    audio: 'assets/audio/comptine-26.mp3',
+    offset: 0,
+    endOffset: 5,
+    lyrics: `La fourmi m'a piqué la main,
+La coquine, la coquine,
+La fourmi m'a piqué la main,
+La coquine elle avait faim.
+
+L'araignée m'a piqué le nez,
+La coquine, la coquine,
+L'araignée m'a piqué le nez,
+La coquine elle était fâchée.
+
+Et l'abeille m'a piqué l'oreille,
+La coquine, la coquine,
+Et l'abeille m'a piqué l'oreille,
+La coquine avait pas sommeil.
+
+Le bourdon m'a piqué le menton,
+Le coquin, le coquin,
+Le bourdon m'a piqué le menton,
+Le coquin voulait un bonbon.
+
+Et l'oiseau m'a piqué le dos,
+Le coquin, le coquin,
+Et l'oiseau m'a piqué le dos,
+Le coquin était un moineau.`,
+  },
+  {
     id: 'comptine-25',
     title: 'A comme Avion',
     emoji: '✈️',
@@ -966,7 +1354,6 @@ function playSong(id) {
 
   cancelFade();
   el.audio.volume = 1;
-  el.audio.loop = (state.loopMode === 'one');
 
   const isNewSong = state.currentSongId !== id;
   if (isNewSong) {
@@ -1063,10 +1450,33 @@ function playRandom() {
   playSong(pick.id);
 }
 
-el.audio.loop = (state.loopMode === 'one');
+/* On ne se sert pas de `audio.loop` natif : il rejoue depuis 0, ce qui ignore
+   `offset` (intro). On gère donc la fin manuellement pour respecter à la fois
+   `offset` (début) et `endOffset` (fin) dans tous les modes. */
+function handleSongEnd() {
+  if (state.loopMode === 'shuffle') {
+    playRandom();
+    return;
+  }
+  // Mode 'one' : on rejoue la même chanson en respectant l'offset de début.
+  const song = getSong(state.currentSongId);
+  if (!song) return;
+  el.audio.currentTime = song.offset || 0;
+  el.audio.play().catch(() => {});
+}
 
-el.audio.addEventListener('ended', () => {
-  if (state.loopMode === 'shuffle') playRandom();
+el.audio.addEventListener('ended', handleSongEnd);
+
+/* Coupe avant la fin réelle du fichier quand `endOffset` est défini. */
+el.audio.addEventListener('timeupdate', () => {
+  const song = getSong(state.currentSongId);
+  if (!song) return;
+  const endOffset = song.endOffset || 0;
+  if (endOffset <= 0) return;
+  const dur = el.audio.duration;
+  if (!isFinite(dur)) return;
+  if (el.audio.paused || state.loading) return;
+  if (el.audio.currentTime >= dur - endOffset) handleSongEnd();
 });
 
 /* Si un MP3 est corrompu/absent, on saute à la suivante. Au-delà de 3 erreurs
@@ -1290,10 +1700,11 @@ function updateProgressUI() {
   const song = getSong(state.currentSongId);
   if (!song) return;
   const offset = song.offset || 0;
+  const endOffset = song.endOffset || 0;
   const dur = el.audio.duration;
   const cur = el.audio.currentTime;
-  const usableDur = isFinite(dur) ? Math.max(0, dur - offset) : 0;
-  const usableCur = Math.max(0, cur - offset);
+  const usableDur = isFinite(dur) ? Math.max(0, dur - offset - endOffset) : 0;
+  const usableCur = Math.max(0, Math.min(usableDur, cur - offset));
   const pct = usableDur > 0 ? (usableCur / usableDur) * 100 : 0;
   el.miniProgressFill.style.width = pct + '%';
   if (state.sheetOpen) {
@@ -1316,8 +1727,9 @@ function seekFromEvent(e) {
   const pct = Math.max(0, Math.min(1, x / rect.width));
   const dur = el.audio.duration;
   const offset = song.offset || 0;
+  const endOffset = song.endOffset || 0;
   if (!isFinite(dur)) return;
-  const usableDur = Math.max(0, dur - offset);
+  const usableDur = Math.max(0, dur - offset - endOffset);
   el.audio.currentTime = offset + pct * usableDur;
   updateProgressUI();
 }
@@ -1352,7 +1764,6 @@ function cycleLoopMode() {
   const i = order.indexOf(state.loopMode);
   state.loopMode = order[(i + 1) % order.length];
   localStorage.setItem('loopMode', state.loopMode);
-  el.audio.loop = (state.loopMode === 'one');
   updateLoopUI();
 }
 
@@ -1518,7 +1929,8 @@ function updateMediaPositionState() {
   const dur = el.audio.duration;
   if (!isFinite(dur) || dur <= 0) return;
   const offset = song.offset || 0;
-  const usableDur = Math.max(0, dur - offset);
+  const endOffset = song.endOffset || 0;
+  const usableDur = Math.max(0, dur - offset - endOffset);
   const usableCur = Math.max(0, Math.min(usableDur, el.audio.currentTime - offset));
   try {
     navigator.mediaSession.setPositionState({

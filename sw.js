@@ -1,4 +1,4 @@
-const CACHE = 'comptines-20260501-fixes';
+const CACHE = 'comptines-20260508-haut-bas';
 
 const PRECACHE = [
   '/',
@@ -32,6 +32,18 @@ const PRECACHE = [
   '/assets/audio/comptine-23.mp3',
   '/assets/audio/comptine-24.mp3',
   '/assets/audio/comptine-25.mp3',
+  '/assets/audio/comptine-26.mp3',
+  '/assets/audio/comptine-27.mp3',
+  '/assets/audio/comptine-28.mp3',
+  '/assets/audio/comptine-29.mp3',
+  '/assets/audio/comptine-30.mp3',
+  '/assets/audio/comptine-31.mp3',
+  '/assets/audio/comptine-32.mp3',
+  '/assets/audio/comptine-33.mp3',
+  '/assets/audio/comptine-34.mp3',
+  '/assets/audio/comptine-35.mp3',
+  '/assets/audio/comptine-36.mp3',
+  '/assets/audio/comptine-37.mp3',
 ];
 
 self.addEventListener('install', (e) => {
